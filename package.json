@@ -1,0 +1,38 @@
+{
+    "name": "ttl-queue",
+    "version": "0.0.1",
+    "description": "",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "test": "tsc -b ./test/ && ava",
+        "build": "tsc -b"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zimtsui/ttl-queue.git"
+    },
+    "author": "Zim",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/zimtsui/ttl-queue/issues"
+    },
+    "homepage": "https://github.com/zimtsui/ttl-queue#readme",
+    "devDependencies": {
+        "@types/bluebird": "^3.5.27",
+        "@types/node": "^12.7.11",
+        "ava": "^2.4.0",
+        "bluebird": "^3.7.0",
+        "typescript": "^3.6.3"
+    },
+    "dependencies": {
+        "@types/lodash": "^4.14.141",
+        "lodash": "^4.17.15",
+        "pollerloop": "git+https://github.com/zimtsui/pollerloop.git",
+        "queue": "git+https://github.com/zimtsui/queue.git"
+    },
+    "ava": {
+        "failWithoutAssertions": false,
+        "verbose": true
+    }
+}
