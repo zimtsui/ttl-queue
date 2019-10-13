@@ -1,89 +1,108 @@
-import { Queue, parseInt, Subscript } from 'queue';
+import {
+    Queue,
+    QueueLike,
+    parseNatural,
+} from 'queue';
 import { Polling, Pollerloop } from 'pollerloop';
 import _ from 'lodash';
 
-class TtlQueue<T> implements Queue<T> {
-    public length = <number>{};
+// 这里的 proxy 逻辑上是代理 q，而形式上是继承 NegativeSubscript，
+// 所以 q 返回的 this 不会自动多态到 proxy 上，每个方法都要手动写一遍。
+
+interface Record<T> {
+    element: T;
+    time: number;
+}
+
+/*
+这里不能写 class extends，原因是父类构造函数中调用了 this.push 方法，这个方法会被多态到
+Queue 上，而 Queue 的 push 方法引用了 this.q，此时 this.q 还未创建。
+
+从逻辑上说，TtlQueue 和 Queue 本来就不是继承关系，平时写成继承本来就是一种
+workaround，是为了方便懒得把成员都写一遍。
+*/
+
+class TtlQueue<T> implements QueueLike<T> {
+    private q = new Queue<Record<T>>();
     [index: number]: T;
-    public push(...elems: T[]) { return <this>{}; }
-    public shift(num = 1) { return <this>{}; }
-    public shiftWhile(pred: (x: T) => boolean) { return <this>{}; }
-    public [Symbol.iterator]() { return <Iterator<T>>{}; }
-    public clear() { return <this>{}; }
 
     constructor(
-        ttl: number = Number.POSITIVE_INFINITY,
-        clean_interval: number = ttl,
+        private ttl = Number.POSITIVE_INFINITY,
+        private clean_interval = 0,
     ) {
-        interface R {
-            element: T;
-            time: number;
-        }
-        const q = new Queue<R>();
-
         const polling: Polling = async (stopping, isRunning, delay) => {
             for (; ;) {
                 await delay(clean_interval);
                 if (!isRunning()) break;
-
-                const now = Date.now();
-                q.shiftWhile(
-                    r => r.time < now - ttl
-                );
+                this.clean();
             }
             stopping();
         }
-        if (Number.isFinite(clean_interval))
+        if (clean_interval && Number.isFinite(clean_interval))
             new Pollerloop(polling).start();
 
-        return new Proxy(<Queue<T>>{}, {
-            get: function (
-                target,
-                field: Subscript,
-                receiver: Queue<T>,
-            ) {
-
-                if (field === 'push') return function (...args: T[]) {
-                    const time = Date.now();
-                    const rs = _.map(args, element => ({
-                        element, time,
-                    }));
-                    q.push(...rs);
-                    return receiver;
-                }
-
-                if (field === 'shiftWhile') return function (
-                    pred: (x: T) => boolean
-                ) {
-                    q.shiftWhile(r => pred(r.element));
-                    return receiver;
-                }
-
-                if (field === Symbol.iterator)
-                    return _.map(q, r => r.element)[Symbol.iterator];
-
+        return new Proxy(this, {
+            get: function (target, field, receiver) {
                 try {
-                    const subscript = parseInt(field);
-                    return q[subscript].element;
+                    const subscript = parseNatural(field);
+                    if (!target.clean_interval) target.clean();
+                    return target.q[subscript].element;
                 } catch (e) {
-                    // console.log(field);
-                    const member = Reflect.get(q, field, q);
-                    if (typeof member === 'function')
-                        return function (...args: any[]) {
-                            const returnValue = member(...args);
-                            if (returnValue === q) return receiver;
-                            else return returnValue;
-                        }
-                    else return member;
+                    return Reflect.get(target, field, receiver);
                 }
             }
         });
+    }
+
+    private clean(): void {
+        const now = Date.now();
+        this.q.shiftWhile(
+            r => r.time < now - this.ttl
+        );
+    }
+
+    public push(...elems: T[]): this {
+        if (!this.clean_interval) this.clean();
+        const time = Date.now();
+        const rs = elems.map(
+            (element): Record<T> => ({
+                element, time,
+            })
+        );
+        this.q.push(...rs);
+        return this;
+    }
+
+    public shiftWhile(pred: (x: T) => boolean): this {
+        if (!this.clean_interval) this.clean();
+        this.q.shiftWhile(r => pred(r.element));
+        return this;
+    }
+
+    public [Symbol.iterator]() {
+        if (!this.clean_interval) this.clean();
+        return _.map(this.q, r => r.element)[Symbol.iterator]();
+    }
+
+    public shift(num = 1): this {
+        if (!this.clean_interval) this.clean();
+        this.q.shift(num);
+        return this;
+    }
+
+    public clear(): this {
+        this.q.clear();
+        return this;
+    }
+
+    public get length(): number {
+        if (!this.clean_interval) this.clean();
+        return this.q.length;
     }
 }
 
 export default TtlQueue;
 export {
-    parseInt,
-    Subscript,
+    parseNatural,
     TtlQueue,
 }

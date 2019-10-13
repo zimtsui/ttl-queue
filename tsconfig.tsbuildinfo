@@ -133,9 +133,13 @@
         "version": "63b66918290d794f73832a6d0325be5026236674fe8c0cb0b68d162000d7bbe8",
         "signature": "63b66918290d794f73832a6d0325be5026236674fe8c0cb0b68d162000d7bbe8"
       },
+      "./node_modules/queue/dist/parse-natural.d.ts": {
+        "version": "d2588878ba44c241a07305b295f1ec4f4a8a0df4c7ae956a6182315583be40f1",
+        "signature": "d2588878ba44c241a07305b295f1ec4f4a8a0df4c7ae956a6182315583be40f1"
+      },
       "./node_modules/queue/dist/index.d.ts": {
-        "version": "f74441edbdde1b78f0658eb6ff3488233214dcd2cf0e15333d0ad9a6d9ce294c",
-        "signature": "f74441edbdde1b78f0658eb6ff3488233214dcd2cf0e15333d0ad9a6d9ce294c"
+        "version": "b6abe42600e601fcf4a85f9721dae694212d411658169cf3c35c657e7cd99a11",
+        "signature": "b6abe42600e601fcf4a85f9721dae694212d411658169cf3c35c657e7cd99a11"
       },
       "./node_modules/pollerloop/dist/index.d.ts": {
         "version": "465b55401c80f58a38c029b46b7a9efbbfa9c93a54a7b7ee3f32f447270b3438",
@@ -194,8 +198,8 @@
         "signature": "bbf144d4354e2aaa6439f32761f3ee798cc68d1600adab6e2a596f25269f106d"
       },
       "./src/index.ts": {
-        "version": "bd4d8fa32555a94c9c618d47b420d22903a369d3718001ece9182844c6ca3a79",
-        "signature": "77d393d7641e1050e8ced5b9cb2c8ca231146bc6422470b5c648baa949a1f7c8"
+        "version": "dae4ed3dba6c267ad31b2ba943a854ac30dfdd308550ba993ae3edc2319ec99f",
+        "signature": "53156bd6471a6f616e8ecc7f7af9afc840ba4acee77490409c615a77e38bf7f1"
       },
       "./node_modules/@types/bluebird/index.d.ts": {
         "version": "3c10804e3bd90aa404eefbc300c362b0ebbd23b34eb03ae592717ac111889f34",
@@ -543,7 +547,12 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "./node_modules/queue/dist/parse-natural.d.ts": [
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "./node_modules/queue/dist/index.d.ts": [
+        "./node_modules/queue/dist/parse-natural.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
@@ -1186,7 +1195,12 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "./node_modules/queue/dist/parse-natural.d.ts": [
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "./node_modules/queue/dist/index.d.ts": [
+        "./node_modules/queue/dist/parse-natural.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
@@ -1726,6 +1740,7 @@
       "./node_modules/typescript/lib/lib.es2019.symbol.d.ts",
       "./node_modules/typescript/lib/lib.esnext.intl.d.ts",
       "./node_modules/typescript/lib/lib.esnext.bigint.d.ts",
+      "./node_modules/queue/dist/parse-natural.d.ts",
       "./node_modules/queue/dist/index.d.ts",
       "./node_modules/pollerloop/dist/index.d.ts",
       "./node_modules/@types/lodash/ts3.1/common/common.d.ts",

@@ -33,13 +33,13 @@ ava_1.default('test queue', t => {
     assert_1.default.deepStrictEqual(lodash_1.default.takeRightWhile(q, x => x > 5), [6, 7, 8]);
 });
 ava_1.default('test ttl', (t) => __awaiter(void 0, void 0, void 0, function* () {
-    const q = new __1.default(3000);
+    const q = new __1.default(2000);
     q.push(1);
     yield bluebird_1.default.delay(1000);
     q.push(2);
-    yield bluebird_1.default.delay(1000);
+    yield bluebird_1.default.delay(500);
     assert_1.default.deepStrictEqual([...q], [1, 2]);
-    yield bluebird_1.default.delay(2000);
+    yield bluebird_1.default.delay(1000);
     assert_1.default.deepStrictEqual([...q], [2]);
 }));
 //# sourceMappingURL=index.js.map

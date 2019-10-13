@@ -21,12 +21,12 @@ test('test queue', t => {
 });
 
 test('test ttl', async t => {
-    const q = new TtlQueue<number>(3000);
+    const q = new TtlQueue<number>(2000);
     q.push(1);
     await Bluebird.delay(1000);
     q.push(2);
-    await Bluebird.delay(1000);
+    await Bluebird.delay(500);
     assert.deepStrictEqual([...q], [1, 2]);
-    await Bluebird.delay(2000);
+    await Bluebird.delay(1000);
     assert.deepStrictEqual([...q], [2]);
 });
