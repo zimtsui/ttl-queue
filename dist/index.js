@@ -67,22 +67,10 @@ class TtlQueue {
         this.q.push(...rs);
         return this;
     }
-    shiftWhile(pred) {
-        if (!this.clean_interval)
-            this.clean();
-        this.q.shiftWhile(r => pred(r.element));
-        return this;
-    }
     [Symbol.iterator]() {
         if (!this.clean_interval)
             this.clean();
         return lodash_1.default.map(this.q, r => r.element)[Symbol.iterator]();
-    }
-    shift(num = 1) {
-        if (!this.clean_interval)
-            this.clean();
-        this.q.shift(num);
-        return this;
     }
     clear() {
         this.q.clear();

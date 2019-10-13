@@ -1,6 +1,5 @@
 import {
     Queue,
-    QueueLike,
     parseNatural,
 } from 'queue';
 import { Polling, Pollerloop } from 'pollerloop';
@@ -22,7 +21,7 @@ Queue 上，而 Queue 的 push 方法引用了 this.q，此时 this.q 还未创�
 workaround，是为了方便懒得把成员都写一遍。
 */
 
-class TtlQueue<T> implements QueueLike<T> {
+class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
     private q = new Queue<Record<T>>();
     [index: number]: T;
 
@@ -73,21 +72,9 @@ class TtlQueue<T> implements QueueLike<T> {
         return this;
     }
 
-    public shiftWhile(pred: (x: T) => boolean): this {
-        if (!this.clean_interval) this.clean();
-        this.q.shiftWhile(r => pred(r.element));
-        return this;
-    }
-
     public [Symbol.iterator]() {
         if (!this.clean_interval) this.clean();
         return _.map(this.q, r => r.element)[Symbol.iterator]();
-    }
-
-    public shift(num = 1): this {
-        if (!this.clean_interval) this.clean();
-        this.q.shift(num);
-        return this;
     }
 
     public clear(): this {
