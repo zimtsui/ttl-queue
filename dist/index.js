@@ -24,9 +24,10 @@ Queue 上，而 Queue 的 push 方法引用了 this.q，此时 this.q 还未创�
 workaround，是为了方便懒得把成员都写一遍。
 */
 class TtlQueue {
-    constructor(ttl = Number.POSITIVE_INFINITY, clean_interval = 0) {
+    constructor(ttl = Number.POSITIVE_INFINITY, clean_interval = 0, onShift) {
         this.ttl = ttl;
         this.clean_interval = clean_interval;
+        this.onShift = onShift;
         this.q = new queue_1.Queue();
         const polling = (stopping, isRunning, delay) => __awaiter(this, void 0, void 0, function* () {
             for (;;) {
@@ -55,7 +56,15 @@ class TtlQueue {
     }
     clean() {
         const now = Date.now();
-        this.q.shiftWhile(r => r.time < now - this.ttl);
+        this.q.shiftWhile(r => {
+            if (r.time < now - this.ttl) {
+                if (this.onShift)
+                    this.onShift(r.element);
+                return true;
+            }
+            else
+                return false;
+        });
     }
     push(...elems) {
         if (!this.clean_interval)
