@@ -27,12 +27,12 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
 
     constructor(
         private ttl = Number.POSITIVE_INFINITY,
-        private clean_interval = 0,
+        private clean_interval?: number,
         private onShift?: (element: T, time: number) => void,
     ) {
         const polling: Polling = async (stopping, isRunning, delay) => {
             for (; ;) {
-                await delay(clean_interval);
+                await delay(clean_interval!);
                 if (!isRunning()) break;
                 this.clean();
             }

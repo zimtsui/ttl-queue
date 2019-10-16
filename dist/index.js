@@ -24,7 +24,7 @@ Queue 上，而 Queue 的 push 方法引用了 this.q，此时 this.q 还未创�
 workaround，是为了方便懒得把成员都写一遍。
 */
 class TtlQueue {
-    constructor(ttl = Number.POSITIVE_INFINITY, clean_interval = 0, onShift) {
+    constructor(ttl = Number.POSITIVE_INFINITY, clean_interval, onShift) {
         this.ttl = ttl;
         this.clean_interval = clean_interval;
         this.onShift = onShift;
