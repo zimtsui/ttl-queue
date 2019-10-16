@@ -198,8 +198,8 @@
         "signature": "bbf144d4354e2aaa6439f32761f3ee798cc68d1600adab6e2a596f25269f106d"
       },
       "./src/index.ts": {
-        "version": "6195a212c023a8e9b8ceecd386c900a516b4e265a8d8ea611035e44d9de2051b",
-        "signature": "892064a076d1aeb2e654b666303920723bb7a5c07ccde579bdde1dc265414dcd"
+        "version": "3a560f6474298175577f9d78e65d56fe9f85838e191c3f3817ae2406c94c19f7",
+        "signature": "5974cfe3485603a5054779e6d0ef02c79f8bb33a288e830f001927b3bc5fb5b9"
       },
       "./node_modules/@types/bluebird/index.d.ts": {
         "version": "3c10804e3bd90aa404eefbc300c362b0ebbd23b34eb03ae592717ac111889f34",

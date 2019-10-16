@@ -1,13 +1,18 @@
 import { parseNatural } from 'queue';
+interface Record<T> {
+    element: T;
+    time: number;
+}
 declare class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
     private ttl;
     private clean_interval;
     private onShift?;
     private q;
     [index: number]: T;
-    constructor(ttl?: number, clean_interval?: number, onShift?: ((element: T) => void) | undefined);
+    constructor(ttl?: number, clean_interval?: number, onShift?: ((element: T, time: number) => void) | undefined);
     private clean;
     push(...elems: T[]): this;
+    pushWithTime(...rs: Record<T>[]): this;
     [Symbol.iterator](): IterableIterator<T>;
     clear(): this;
     readonly length: number;

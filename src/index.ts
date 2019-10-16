@@ -28,7 +28,7 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
     constructor(
         private ttl = Number.POSITIVE_INFINITY,
         private clean_interval = 0,
-        private onShift?: (element: T) => void,
+        private onShift?: (element: T, time: number) => void,
     ) {
         const polling: Polling = async (stopping, isRunning, delay) => {
             for (; ;) {
@@ -58,7 +58,10 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
         const now = Date.now();
         this.q.shiftWhile(r => {
             if (r.time < now - this.ttl) {
-                if (this.onShift) this.onShift(r.element);
+                if (this.onShift) this.onShift(
+                    r.element,
+                    r.time,
+                );
                 return true;
             } else return false;
         });
@@ -72,6 +75,12 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
                 element, time,
             })
         );
+        this.q.push(...rs);
+        return this;
+    }
+
+    public pushWithTime(...rs: Record<T>[]): this {
+        if (!this.clean_interval) this.clean();
         this.q.push(...rs);
         return this;
     }

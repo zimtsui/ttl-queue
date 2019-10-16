@@ -59,7 +59,7 @@ class TtlQueue {
         this.q.shiftWhile(r => {
             if (r.time < now - this.ttl) {
                 if (this.onShift)
-                    this.onShift(r.element);
+                    this.onShift(r.element, r.time);
                 return true;
             }
             else
@@ -73,6 +73,12 @@ class TtlQueue {
         const rs = elems.map((element) => ({
             element, time,
         }));
+        this.q.push(...rs);
+        return this;
+    }
+    pushWithTime(...rs) {
+        if (!this.clean_interval)
+            this.clean();
         this.q.push(...rs);
         return this;
     }
