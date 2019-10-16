@@ -38,7 +38,7 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
             }
             stopping();
         }
-        if (clean_interval && Number.isFinite(clean_interval))
+        if (clean_interval && Number.isSafeInteger(ttl))
             new Pollerloop(polling).start();
 
         return new Proxy(this, {

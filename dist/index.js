@@ -38,7 +38,7 @@ class TtlQueue {
             }
             stopping();
         });
-        if (clean_interval && Number.isFinite(clean_interval))
+        if (clean_interval && Number.isSafeInteger(ttl))
             new pollerloop_1.Pollerloop(polling).start();
         return new Proxy(this, {
             get: function (target, field, receiver) {
