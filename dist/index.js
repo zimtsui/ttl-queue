@@ -38,14 +38,13 @@ class TtlQueue {
             }
             stopping();
         });
-        if (clean_interval && Number.isSafeInteger(ttl))
+        if (this.clean_interval)
             new pollerloop_1.Pollerloop(polling).start();
         return new Proxy(this, {
             get: function (target, field, receiver) {
                 try {
                     const subscript = queue_1.parseNatural(field);
-                    if (!target.clean_interval)
-                        target.clean();
+                    target.clean();
                     return target.q[subscript].element;
                 }
                 catch (e) {
@@ -67,8 +66,7 @@ class TtlQueue {
         });
     }
     push(...elems) {
-        if (!this.clean_interval)
-            this.clean();
+        this.clean();
         const time = Date.now();
         const rs = elems.map((element) => ({
             element, time,
@@ -77,14 +75,12 @@ class TtlQueue {
         return this;
     }
     pushWithTime(...rs) {
-        if (!this.clean_interval)
-            this.clean();
+        this.clean();
         this.q.push(...rs);
         return this;
     }
     [Symbol.iterator]() {
-        if (!this.clean_interval)
-            this.clean();
+        this.clean();
         return lodash_1.default.map(this.q, r => r.element)[Symbol.iterator]();
     }
     clear() {
@@ -92,8 +88,7 @@ class TtlQueue {
         return this;
     }
     get length() {
-        if (!this.clean_interval)
-            this.clean();
+        this.clean();
         return this.q.length;
     }
 }

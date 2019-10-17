@@ -38,14 +38,14 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
             }
             stopping();
         }
-        if (clean_interval && Number.isSafeInteger(ttl))
+        if (this.clean_interval)
             new Pollerloop(polling).start();
 
         return new Proxy(this, {
             get: function (target, field, receiver) {
                 try {
                     const subscript = parseNatural(field);
-                    if (!target.clean_interval) target.clean();
+                    target.clean();
                     return target.q[subscript].element;
                 } catch (e) {
                     return Reflect.get(target, field, receiver);
@@ -68,7 +68,7 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
     }
 
     public push(...elems: T[]): this {
-        if (!this.clean_interval) this.clean();
+        this.clean();
         const time = Date.now();
         const rs = elems.map(
             (element): Record<T> => ({
@@ -80,13 +80,13 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
     }
 
     public pushWithTime(...rs: Record<T>[]): this {
-        if (!this.clean_interval) this.clean();
+        this.clean();
         this.q.push(...rs);
         return this;
     }
 
     public [Symbol.iterator]() {
-        if (!this.clean_interval) this.clean();
+        this.clean();
         return _.map(this.q, r => r.element)[Symbol.iterator]();
     }
 
@@ -96,7 +96,7 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
     }
 
     public get length(): number {
-        if (!this.clean_interval) this.clean();
+        this.clean();
         return this.q.length;
     }
 }
