@@ -198,7 +198,7 @@
         "signature": "bbf144d4354e2aaa6439f32761f3ee798cc68d1600adab6e2a596f25269f106d"
       },
       "./src/index.ts": {
-        "version": "b78dffed4394bb80c4f68e28d346314f618fe18b6860732f5072cd26ef56f0dc",
+        "version": "f7795f965808da52f16a6e38a794589aa071fbb508384355440e8f31824837bf",
         "signature": "9f29552382f697200f8e27581a132901de193724f695008dc831f989e46fca96"
       },
       "./node_modules/@types/bluebird/index.d.ts": {

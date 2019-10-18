@@ -87,7 +87,7 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
 
     public [Symbol.iterator]() {
         this.clean();
-        return _.map(this.q, r => r.element)[Symbol.iterator]();
+        return _.map([...this.q], r => r.element)[Symbol.iterator]();
     }
 
     public clear(): this {

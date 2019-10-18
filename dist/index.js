@@ -81,7 +81,7 @@ class TtlQueue {
     }
     [Symbol.iterator]() {
         this.clean();
-        return lodash_1.default.map(this.q, r => r.element)[Symbol.iterator]();
+        return lodash_1.default.map([...this.q], r => r.element)[Symbol.iterator]();
     }
     clear() {
         this.q.clear();
