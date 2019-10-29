@@ -13,12 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const queue_1 = require("queue");
-exports.parseNatural = queue_1.parseNatural;
 const pollerloop_1 = require("pollerloop");
 const lodash_1 = __importDefault(require("lodash"));
 /*
 这里不能写 class extends，原因是父类构造函数中调用了 this.push 方法，这个方法会被多态到
-Queue 上，而 Queue 的 push 方法引用了 this.q，此时 this.q 还未创建。
+子类上，而子类的 push 方法引用了 this.q，此时 this.q 还未创建。
 
 从逻辑上说，TtlQueue 和 Queue 本来就不是继承关系，平时写成继承本来就是一种
 workaround，是为了方便懒得把成员都写一遍。
@@ -42,14 +41,14 @@ class TtlQueue {
             new pollerloop_1.Pollerloop(polling).start();
         return new Proxy(this, {
             get: function (target, field, receiver) {
-                try {
-                    const subscript = queue_1.parseNatural(field);
+                let subscript;
+                if (typeof field === 'string'
+                    && !Number.isNaN(subscript = Number.parseInt(field))) {
                     target.clean();
-                    return target.q[subscript].element;
+                    return target.q.n(subscript).element;
                 }
-                catch (e) {
+                else
                     return Reflect.get(target, field, receiver);
-                }
             }
         });
     }

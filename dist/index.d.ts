@@ -1,4 +1,3 @@
-import { parseNatural } from 'queue';
 interface Record<T> {
     element: T;
     time: number;
@@ -18,4 +17,4 @@ declare class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
     readonly length: number;
 }
 export default TtlQueue;
-export { parseNatural, TtlQueue, };
+export { TtlQueue, };

@@ -1,6 +1,5 @@
 import {
     Queue,
-    parseNatural,
 } from 'queue';
 import { Polling, Pollerloop } from 'pollerloop';
 import _ from 'lodash';
@@ -15,7 +14,7 @@ interface Record<T> {
 
 /*
 这里不能写 class extends，原因是父类构造函数中调用了 this.push 方法，这个方法会被多态到
-Queue 上，而 Queue 的 push 方法引用了 this.q，此时 this.q 还未创建。
+子类上，而子类的 push 方法引用了 this.q，此时 this.q 还未创建。
 
 从逻辑上说，TtlQueue 和 Queue 本来就不是继承关系，平时写成继承本来就是一种
 workaround，是为了方便懒得把成员都写一遍。
@@ -42,14 +41,20 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
             new Pollerloop(polling).start();
 
         return new Proxy(this, {
-            get: function (target, field, receiver) {
-                try {
-                    const subscript = parseNatural(field);
+            get: function (
+                target,
+                field: string | symbol,
+                receiver
+            ) {
+                let subscript: number;
+                if (
+                    typeof field === 'string'
+                    && !Number.isNaN(subscript = Number.parseInt(field))
+                ) {
                     target.clean();
-                    return target.q[subscript].element;
-                } catch (e) {
+                    return target.q.n(subscript).element;
+                } else
                     return Reflect.get(target, field, receiver);
-                }
             }
         });
     }
@@ -103,6 +108,5 @@ class TtlQueue<T> implements ArrayLike<T>, Iterable<T> {
 
 export default TtlQueue;
 export {
-    parseNatural,
     TtlQueue,
 }
