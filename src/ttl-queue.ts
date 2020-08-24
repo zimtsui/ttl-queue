@@ -20,7 +20,7 @@ interface Config<T> {
 
 class TtlQueue<T> extends Startable implements RAIQI<T> {
     private times: RAIQI<number>;
-    private elements: RAIQI<T>;
+    private items: RAIQI<T>;
     private pollerloop: Pollerloop;
     [index: number]: T;
 
@@ -40,7 +40,7 @@ class TtlQueue<T> extends Startable implements RAIQI<T> {
         Object.assign(this.config, config);
 
         this.times = new this.config.timeCarrierConstructor();
-        this.elements = new this.config.elemCarrierConstructor();
+        this.items = new this.config.elemCarrierConstructor();
 
         const poll: Poll = async (stop, ifShouldBeRunning, delay) => {
             for (; ;) {
@@ -64,7 +64,7 @@ class TtlQueue<T> extends Startable implements RAIQI<T> {
                 }
                 if (typeof field === 'number') {
                     if (!target.config.cleaningInterval) target.clean();
-                    return target.elements[field];
+                    return target.items[field];
                 } else {
                     const returnValue = Reflect.get(target, field, target);
                     if (returnValue === target) return receiver; else return returnValue;
@@ -83,30 +83,30 @@ class TtlQueue<T> extends Startable implements RAIQI<T> {
             await this.pollerloop.stop();
     }
 
-    public push(...items: T[]): void {
-        this.elements.push(...items);
-        this.times.push(..._.times(items.length, _.constant(Date.now())));
+    public push(item: T, time = Date.now()): void {
+        this.items.push(item);
+        this.times.push(time);
     }
 
     public shift(num?: number): void {
-        this.elements.shift(num);
+        this.items.shift(num);
         this.times.shift(num);
     }
 
     public get length(): number {
         if (!this.config.cleaningInterval) this.clean();
-        return this.elements.length;
+        return this.items.length;
     }
 
     public [Symbol.iterator]() {
         if (!this.config.cleaningInterval) this.clean();
-        return this.elements[Symbol.iterator]();
+        return this.items[Symbol.iterator]();
     }
 
     private clean(): void {
         const now = Date.now();
         for (; this.times.length && this.times[0] < now - this.config.ttl;) {
-            const element = this.elements[0];
+            const element = this.items[0];
             const time = this.times[0];
             this.shift();
             if (this.config.onShift) this.config.onShift(

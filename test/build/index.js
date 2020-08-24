@@ -1,6 +1,7 @@
 import TtlQueue from '../../dist/index';
 import test from 'ava';
 import assert from 'assert';
+import _ from 'lodash';
 import Bluebird from 'bluebird';
 import Queue from 'queue';
 test('test array', async (t) => {
@@ -13,7 +14,7 @@ test('test array', async (t) => {
         t.log(err); });
     q.push(1);
     assert.deepStrictEqual([...q], [1]);
-    q.push(2, 3, 4, 5, 6, 7, 8);
+    _.range(2, 9).forEach(q.push.bind(q));
     assert.deepStrictEqual([...q], [1, 2, 3, 4, 5, 6, 7, 8]);
     await q.stop();
 });

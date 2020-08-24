@@ -13,14 +13,14 @@ interface Config<T> {
 }
 declare class TtlQueue<T> extends Startable implements RAIQI<T> {
     private times;
-    private elements;
+    private items;
     private pollerloop;
     [index: number]: T;
     private config;
     constructor(config?: Partial<Config<T>> | number);
     protected _start(): Promise<void>;
     protected _stop(): Promise<void>;
-    push(...items: T[]): void;
+    push(item: T, time?: number): void;
     shift(num?: number): void;
     get length(): number;
     [Symbol.iterator](): Iterator<T, any, undefined>;

@@ -14,7 +14,7 @@ test('test array', async t => {
     await q.start(err => { if (err) t.log(err); });
     q.push(1);
     assert.deepStrictEqual([...q], [1]);
-    q.push(2, 3, 4, 5, 6, 7, 8);
+    _.range(2, 9).forEach(q.push.bind(q));
     assert.deepStrictEqual([...q], [1, 2, 3, 4, 5, 6, 7, 8]);
     await q.stop();
 });
