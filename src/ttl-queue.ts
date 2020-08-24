@@ -1,5 +1,4 @@
 import {
-    default as Queue,
     RandomAccessIterableQueueInterface as RAIQI,
 } from 'queue';
 import { Poll, Pollerloop } from 'pollerloop';

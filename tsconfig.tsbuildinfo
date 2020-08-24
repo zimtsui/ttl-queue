@@ -312,7 +312,7 @@
         "affectsGlobalScope": true
       },
       "./src/ttl-queue.ts": {
-        "version": "aa720b46a181bba56e5c573adec0b1fbb51bc50a66c89492dd8372354d842fd5",
+        "version": "aebb6a74ab1a3495013feb6a5a5155e5aaa00bbf64cc83bb0b7dd6cee21dc030",
         "signature": "afc037bb820692847aa84a2552b081a3878718c32a06c1a7e2d750a532d10ee7",
         "affectsGlobalScope": false
       },

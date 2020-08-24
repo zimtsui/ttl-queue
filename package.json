@@ -22,13 +22,13 @@
     "devDependencies": {
         "@types/bluebird": "^3.5.27",
         "ava": "^3.11.1",
-        "bluebird": "^3.7.0",
-        "queue": "git+https://github.com/zimtsui/queue.git"
+        "bluebird": "^3.7.0"
     },
     "dependencies": {
         "@types/lodash": "^4.14.141",
         "lodash": "^4.17.15",
         "pollerloop": "git+https://github.com/zimtsui/pollerloop.git",
-        "startable": "git+https://github.com/zimtsui/startable.git"
+        "startable": "git+https://github.com/zimtsui/startable.git",
+        "queue": "git+https://github.com/zimtsui/queue.git"
     }
 }
