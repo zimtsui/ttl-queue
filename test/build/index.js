@@ -1,36 +1,74 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
+import TtlQueue from '../../dist/index';
+import test from 'ava';
+import assert from 'assert';
+import Bluebird from 'bluebird';
+import Queue from 'queue';
+test('test array', async (t) => {
+    const q = new TtlQueue({
+        ttl: Number.POSITIVE_INFINITY,
+        elemCarrierConstructor: Array,
+        timeCarrierConstructor: Array,
     });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = __importDefault(require("../.."));
-const ava_1 = __importDefault(require("ava"));
-const assert_1 = __importDefault(require("assert"));
-const bluebird_1 = __importDefault(require("bluebird"));
-ava_1.default('test queue', t => {
-    const q = new __1.default();
+    await q.start(err => { if (err)
+        t.log(err); });
     q.push(1);
-    assert_1.default.deepStrictEqual([...q], [1]);
+    assert.deepStrictEqual([...q], [1]);
     q.push(2, 3, 4, 5, 6, 7, 8);
-    assert_1.default.deepStrictEqual([...q], [1, 2, 3, 4, 5, 6, 7, 8]);
+    assert.deepStrictEqual([...q], [1, 2, 3, 4, 5, 6, 7, 8]);
+    await q.stop();
 });
-ava_1.default('test ttl', (t) => __awaiter(void 0, void 0, void 0, function* () {
-    const q = new __1.default(2000);
+test('test ttl array', async (t) => {
+    const q = new TtlQueue({
+        ttl: 2000,
+        cleaningInterval: 100,
+        elemCarrierConstructor: Array,
+        timeCarrierConstructor: Array,
+    });
+    await q.start(err => { if (err)
+        t.log(err); });
     q.push(1);
-    yield bluebird_1.default.delay(1000);
+    await Bluebird.delay(1000);
     q.push(2);
-    yield bluebird_1.default.delay(500);
-    assert_1.default.deepStrictEqual([...q], [1, 2]);
-    yield bluebird_1.default.delay(1000);
-    assert_1.default.deepStrictEqual([...q], [2]);
-}));
+    await Bluebird.delay(500);
+    assert.deepStrictEqual([...q], [1, 2]);
+    await Bluebird.delay(1000);
+    await q.stop();
+});
+test('test ttl queue', async (t) => {
+    const q = new TtlQueue({
+        ttl: 2000,
+        cleaningInterval: 100,
+        elemCarrierConstructor: Queue,
+        timeCarrierConstructor: Queue,
+    });
+    await q.start(err => { if (err)
+        t.log(err); });
+    q.push(1);
+    await Bluebird.delay(1000);
+    q.push(2);
+    await Bluebird.delay(500);
+    assert(q[0] === 1);
+    assert(q[1] === 2);
+    assert.deepStrictEqual([...q], [1, 2]);
+    await Bluebird.delay(1000);
+    await q.stop();
+});
+test('test ttl queue realtime', async (t) => {
+    const q = new TtlQueue({
+        ttl: 2000,
+        elemCarrierConstructor: Queue,
+        timeCarrierConstructor: Queue,
+    });
+    await q.start(err => { if (err)
+        t.log(err); });
+    q.push(1);
+    await Bluebird.delay(1000);
+    q.push(2);
+    await Bluebird.delay(500);
+    assert(q[0] === 1);
+    assert(q[1] === 2);
+    assert.deepStrictEqual([...q], [1, 2]);
+    await Bluebird.delay(1000);
+    await q.stop();
+});
 //# sourceMappingURL=index.js.map
