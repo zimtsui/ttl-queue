@@ -27,8 +27,8 @@
     "dependencies": {
         "@types/lodash": "^4.14.141",
         "lodash": "^4.17.15",
-        "pollerloop": "git+https://github.com/zimtsui/pollerloop.git",
-        "startable": "git+https://github.com/zimtsui/startable.git",
-        "queue": "git+https://github.com/zimtsui/queue.git"
+        "pollerloop": "git+https://gitee.com/zimtsui/pollerloop.git",
+        "startable": "git+https://gitee.com/zimtsui/startable.git",
+        "queue": "git+https://gitee.com/zimtsui/queue.git"
     }
 }
