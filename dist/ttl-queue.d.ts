@@ -1,4 +1,5 @@
 import { RandomAccessIterableQueueInterface as RAIQI } from 'queue';
+import { SetTimeout, ClearTimeout } from 'pollerloop';
 import Startable from 'startable';
 interface Config<T> {
     ttl: number;
@@ -11,13 +12,15 @@ interface Config<T> {
         new (...args: any[]): RAIQI<number>;
     };
 }
-declare class TtlQueue<T> extends Startable implements RAIQI<T> {
+declare class TtlQueue<T, Timeout> extends Startable implements RAIQI<T> {
+    private setTimeout;
+    private clearTimeout;
     private times;
     private items;
     private pollerloop;
     [index: number]: T;
     private config;
-    constructor(config?: Partial<Config<T>> | number);
+    constructor(config: number | Partial<Config<T>> | undefined, setTimeout: SetTimeout<Timeout>, clearTimeout: ClearTimeout<Timeout>);
     protected _start(): Promise<void>;
     protected _stop(): Promise<void>;
     push(item: T, time?: number): void;

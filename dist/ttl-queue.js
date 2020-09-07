@@ -1,8 +1,10 @@
-import { Pollerloop } from 'pollerloop';
+import { Pollerloop, } from 'pollerloop';
 import Startable from 'startable';
 class TtlQueue extends Startable {
-    constructor(config = {}) {
+    constructor(config = {}, setTimeout, clearTimeout) {
         super();
+        this.setTimeout = setTimeout;
+        this.clearTimeout = clearTimeout;
         // default configuration
         this.config = {
             ttl: Number.POSITIVE_INFINITY,
@@ -23,7 +25,7 @@ class TtlQueue extends Startable {
             }
             stop();
         };
-        this.pollerloop = new Pollerloop(poll);
+        this.pollerloop = new Pollerloop(poll, this.setTimeout, this.clearTimeout);
         return new Proxy(this, {
             get: function (target, field, receiver) {
                 if (typeof field === 'string') {

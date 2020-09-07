@@ -1,7 +1,12 @@
 import {
     RandomAccessIterableQueueInterface as RAIQI,
 } from 'queue';
-import { Poll, Pollerloop } from 'pollerloop';
+import {
+    Poll,
+    Pollerloop,
+    SetTimeout,
+    ClearTimeout,
+} from 'pollerloop';
 import Startable from 'startable';
 import _ from 'lodash';
 
@@ -17,10 +22,10 @@ interface Config<T> {
     };
 }
 
-class TtlQueue<T> extends Startable implements RAIQI<T> {
+class TtlQueue<T, Timeout> extends Startable implements RAIQI<T> {
     private times: RAIQI<number>;
     private items: RAIQI<T>;
-    private pollerloop: Pollerloop;
+    private pollerloop: Pollerloop<Timeout>;
     [index: number]: T;
 
     // default configuration
@@ -32,6 +37,8 @@ class TtlQueue<T> extends Startable implements RAIQI<T> {
 
     constructor(
         config: Partial<Config<T>> | number = {},
+        private setTimeout: SetTimeout<Timeout>,
+        private clearTimeout: ClearTimeout<Timeout>,
     ) {
         super();
 
@@ -49,13 +56,13 @@ class TtlQueue<T> extends Startable implements RAIQI<T> {
             }
             stop();
         }
-        this.pollerloop = new Pollerloop(poll);
+        this.pollerloop = new Pollerloop(poll, this.setTimeout, this.clearTimeout);
 
         return new Proxy(this, {
             get: function (
-                target: TtlQueue<T>,
+                target: TtlQueue<T, Timeout>,
                 field: string | symbol | number,
-                receiver: TtlQueue<T>,
+                receiver: TtlQueue<T, Timeout>,
             ) {
                 if (typeof field === 'string') {
                     const index = Number.parseInt(field);

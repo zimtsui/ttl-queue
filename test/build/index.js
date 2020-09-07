@@ -9,7 +9,7 @@ test('test array', async (t) => {
         ttl: Number.POSITIVE_INFINITY,
         elemCarrierConstructor: Array,
         timeCarrierConstructor: Array,
-    });
+    }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
@@ -24,7 +24,7 @@ test('test ttl array', async (t) => {
         cleaningInterval: 100,
         elemCarrierConstructor: Array,
         timeCarrierConstructor: Array,
-    });
+    }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
@@ -41,7 +41,7 @@ test('test ttl queue', async (t) => {
         cleaningInterval: 100,
         elemCarrierConstructor: Queue,
         timeCarrierConstructor: Queue,
-    });
+    }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
@@ -59,7 +59,7 @@ test('test ttl queue realtime', async (t) => {
         ttl: 2000,
         elemCarrierConstructor: Queue,
         timeCarrierConstructor: Queue,
-    });
+    }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
