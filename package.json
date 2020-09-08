@@ -14,7 +14,7 @@
         "url": "git+https://github.com/zimtsui/ttl-queue.git"
     },
     "author": "Zim",
-    "license": "MIT",
+    "license": "SEE LICENSE IN ./LICENSE",
     "bugs": {
         "url": "https://github.com/zimtsui/ttl-queue/issues"
     },
