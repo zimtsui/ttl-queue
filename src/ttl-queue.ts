@@ -1,5 +1,7 @@
 import {
-    RandomAccessIterableQueueInterface as RAIQI,
+    QueueLike,
+    arrayLikify,
+    iterabilize,
 } from 'queue';
 import {
     Poll,
@@ -9,30 +11,41 @@ import {
 } from 'pollerloop';
 import Startable from 'startable';
 import _ from 'lodash';
+import Deque from 'double-ended-queue';
+
+type ConstructorType<T> = new (...args: any[]) => T;
+type IAQueue<T> = QueueLike<T> & ArrayLike<T> & Iterable<T>;
 
 interface Config<T> {
     ttl: number;
     cleaningInterval?: number;
     onShift?: (element: T, time: number) => void;
-    elemCarrierConstructor: {
-        new(...args: any[]): RAIQI<T>;
-    };
-    timeCarrierConstructor: {
-        new(...args: any[]): RAIQI<number>;
-    };
+    elemCarrierConstructor: ConstructorType<IAQueue<T>>;
+    timeCarrierConstructor: ConstructorType<IAQueue<number>>;
 }
 
-class TtlQueue<T, Timeout> extends Startable implements RAIQI<T> {
-    private times: RAIQI<number>;
-    private items: RAIQI<T>;
+function iterabilizeArraylikify<T>(
+    Origin: ConstructorType<Deque<T>>
+): ConstructorType<IAQueue<T>> {
+    return iterabilize<T, ConstructorType<Deque<T> & ArrayLike<T>>>(
+        q => q.toArray()[Symbol.iterator](),
+    )(arrayLikify<T, ConstructorType<Deque<T>>>(
+        (q, i) => q.get(i),
+        q => q.length,
+    )(Origin));
+}
+
+class TtlQueue<T, Timeout> extends Startable implements IAQueue<T> {
+    private times: IAQueue<number>;
+    private items: IAQueue<T>;
     private pollerloop: Pollerloop<Timeout>;
     [index: number]: T;
 
     // default configuration
     private config: Config<T> = {
         ttl: Number.POSITIVE_INFINITY,
-        elemCarrierConstructor: Array,
-        timeCarrierConstructor: Array,
+        elemCarrierConstructor: iterabilizeArraylikify<T>(Deque),
+        timeCarrierConstructor: iterabilizeArraylikify<number>(Deque),
     };
 
     constructor(
@@ -125,4 +138,5 @@ class TtlQueue<T, Timeout> extends Startable implements RAIQI<T> {
 export {
     TtlQueue as default,
     TtlQueue,
+    IAQueue,
 }

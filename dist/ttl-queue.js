@@ -1,5 +1,10 @@
+import { arrayLikify, iterabilize, } from 'queue';
 import { Pollerloop, } from 'pollerloop';
 import Startable from 'startable';
+import Deque from 'double-ended-queue';
+function iterabilizeArraylikify(Origin) {
+    return iterabilize(q => q.toArray()[Symbol.iterator]())(arrayLikify((q, i) => q.get(i), q => q.length)(Origin));
+}
 class TtlQueue extends Startable {
     constructor(config = {}, setTimeout, clearTimeout) {
         super();
@@ -8,8 +13,8 @@ class TtlQueue extends Startable {
         // default configuration
         this.config = {
             ttl: Number.POSITIVE_INFINITY,
-            elemCarrierConstructor: Array,
-            timeCarrierConstructor: Array,
+            elemCarrierConstructor: iterabilizeArraylikify(Deque),
+            timeCarrierConstructor: iterabilizeArraylikify(Deque),
         };
         if (typeof config === 'number')
             config = { ttl: config };

@@ -1,18 +1,16 @@
-import { RandomAccessIterableQueueInterface as RAIQI } from 'queue';
+import { QueueLike } from 'queue';
 import { SetTimeout, ClearTimeout } from 'pollerloop';
 import Startable from 'startable';
+declare type ConstructorType<T> = new (...args: any[]) => T;
+declare type IAQueue<T> = QueueLike<T> & ArrayLike<T> & Iterable<T>;
 interface Config<T> {
     ttl: number;
     cleaningInterval?: number;
     onShift?: (element: T, time: number) => void;
-    elemCarrierConstructor: {
-        new (...args: any[]): RAIQI<T>;
-    };
-    timeCarrierConstructor: {
-        new (...args: any[]): RAIQI<number>;
-    };
+    elemCarrierConstructor: ConstructorType<IAQueue<T>>;
+    timeCarrierConstructor: ConstructorType<IAQueue<number>>;
 }
-declare class TtlQueue<T, Timeout> extends Startable implements RAIQI<T> {
+declare class TtlQueue<T, Timeout> extends Startable implements IAQueue<T> {
     private setTimeout;
     private clearTimeout;
     private times;
@@ -29,4 +27,4 @@ declare class TtlQueue<T, Timeout> extends Startable implements RAIQI<T> {
     [Symbol.iterator](): Iterator<T, any, undefined>;
     private clean;
 }
-export { TtlQueue as default, TtlQueue, };
+export { TtlQueue as default, TtlQueue, IAQueue, };

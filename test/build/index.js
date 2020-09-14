@@ -1,9 +1,8 @@
-import TtlQueue from '../../dist/index';
+import { TtlQueue, } from '../../dist/index';
 import test from 'ava';
 import assert from 'assert';
 import _ from 'lodash';
 import Bluebird from 'bluebird';
-import Queue from 'queue';
 test('test array', async (t) => {
     const q = new TtlQueue({
         ttl: Number.POSITIVE_INFINITY,
@@ -39,8 +38,6 @@ test('test ttl queue', async (t) => {
     const q = new TtlQueue({
         ttl: 2000,
         cleaningInterval: 100,
-        elemCarrierConstructor: Queue,
-        timeCarrierConstructor: Queue,
     }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
@@ -57,8 +54,6 @@ test('test ttl queue', async (t) => {
 test('test ttl queue realtime', async (t) => {
     const q = new TtlQueue({
         ttl: 2000,
-        elemCarrierConstructor: Queue,
-        timeCarrierConstructor: Queue,
     }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
