@@ -26,8 +26,8 @@
     },
     "dependencies": {
         "@types/double-ended-queue": "^2.1.1",
-        "double-ended-queue": "^2.1.0-0",
         "@types/lodash": "^4.14.141",
+        "double-ended-queue": "^2.1.0-0",
         "lodash": "^4.17.15",
         "pollerloop": "git+https://gitee.com/zimtsui/pollerloop.git",
         "queue": "git+https://gitee.com/zimtsui/queue.git",
