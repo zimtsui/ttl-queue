@@ -1,7 +1,6 @@
 import {
+    Queue,
     QueueLike,
-    arrayLikify,
-    iterabilize,
 } from 'queue';
 import {
     Poll,
@@ -11,55 +10,43 @@ import {
 } from 'pollerloop';
 import Startable from 'startable';
 import _ from 'lodash';
-import Deque from 'double-ended-queue';
-
-type ConstructorType<T> = new (...args: any[]) => T;
-type IAQueue<T> = QueueLike<T> & ArrayLike<T> & Iterable<T>;
 
 interface Config<T> {
     ttl: number;
     cleaningInterval?: number;
     onShift?: (element: T, time: number) => void;
-    elemCarrierConstructor: ConstructorType<IAQueue<T>>;
-    timeCarrierConstructor: ConstructorType<IAQueue<number>>;
 }
 
-function iterabilizeArraylikify<T>(
-    Origin: ConstructorType<Deque<T>>
-): ConstructorType<IAQueue<T>> {
-    return iterabilize<T, ConstructorType<Deque<T> & ArrayLike<T>>>(
-        q => q.toArray()[Symbol.iterator](),
-    )(arrayLikify<T, ConstructorType<Deque<T>>>(
-        (q, i) => q.get(i),
-        q => q.length,
-    )(Origin));
-}
-
-class TtlQueue<T, Timeout> extends Startable implements IAQueue<T> {
-    private times: IAQueue<number>;
-    private items: IAQueue<T>;
+class TtlQueue<T, Timeout> extends Startable implements QueueLike<T> {
+    private times = new Queue<number>();
+    private items = new Queue<T>();
     private pollerloop: Pollerloop<Timeout>;
     [index: number]: T;
 
     // default configuration
     private config: Config<T> = {
         ttl: Number.POSITIVE_INFINITY,
-        elemCarrierConstructor: iterabilizeArraylikify<T>(Deque),
-        timeCarrierConstructor: iterabilizeArraylikify<number>(Deque),
     };
 
     constructor(
-        config: Partial<Config<T>> | number = {},
+        config: Partial<Config<T>>,
+        setTimeout: SetTimeout<Timeout>,
+        clearTimeout: ClearTimeout<Timeout>,
+    );
+    constructor(
+        ttl: number,
+        setTimeout: SetTimeout<Timeout>,
+        clearTimeout: ClearTimeout<Timeout>,
+    );
+    constructor(
+        configOrTtl: Partial<Config<T>> | number,
         private setTimeout: SetTimeout<Timeout>,
         private clearTimeout: ClearTimeout<Timeout>,
     ) {
         super();
 
-        if (typeof config === 'number') config = { ttl: config };
-        Object.assign(this.config, config);
-
-        this.times = new this.config.timeCarrierConstructor();
-        this.items = new this.config.elemCarrierConstructor();
+        if (typeof configOrTtl === 'number') configOrTtl = { ttl: configOrTtl };
+        Object.assign(this.config, configOrTtl);
 
         const poll: Poll = async (stop, ifShouldBeRunning, delay) => {
             for (; ;) {
@@ -107,9 +94,9 @@ class TtlQueue<T, Timeout> extends Startable implements IAQueue<T> {
         this.times.push(time);
     }
 
-    public shift(num?: number): void {
-        this.items.shift(num);
-        this.times.shift(num);
+    public shift(): void {
+        this.items.shift();
+        this.times.shift();
     }
 
     public get length(): number {
@@ -138,5 +125,4 @@ class TtlQueue<T, Timeout> extends Startable implements IAQueue<T> {
 export {
     TtlQueue as default,
     TtlQueue,
-    IAQueue,
 }

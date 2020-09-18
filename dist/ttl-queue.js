@@ -1,26 +1,20 @@
-import { arrayLikify, iterabilize, } from 'queue';
+import { Queue, } from 'queue';
 import { Pollerloop, } from 'pollerloop';
 import Startable from 'startable';
-import Deque from 'double-ended-queue';
-function iterabilizeArraylikify(Origin) {
-    return iterabilize(q => q.toArray()[Symbol.iterator]())(arrayLikify((q, i) => q.get(i), q => q.length)(Origin));
-}
 class TtlQueue extends Startable {
-    constructor(config = {}, setTimeout, clearTimeout) {
+    constructor(configOrTtl, setTimeout, clearTimeout) {
         super();
         this.setTimeout = setTimeout;
         this.clearTimeout = clearTimeout;
+        this.times = new Queue();
+        this.items = new Queue();
         // default configuration
         this.config = {
             ttl: Number.POSITIVE_INFINITY,
-            elemCarrierConstructor: iterabilizeArraylikify(Deque),
-            timeCarrierConstructor: iterabilizeArraylikify(Deque),
         };
-        if (typeof config === 'number')
-            config = { ttl: config };
-        Object.assign(this.config, config);
-        this.times = new this.config.timeCarrierConstructor();
-        this.items = new this.config.elemCarrierConstructor();
+        if (typeof configOrTtl === 'number')
+            configOrTtl = { ttl: configOrTtl };
+        Object.assign(this.config, configOrTtl);
         const poll = async (stop, ifShouldBeRunning, delay) => {
             for (;;) {
                 await delay(this.config.cleaningInterval);
@@ -65,9 +59,9 @@ class TtlQueue extends Startable {
         this.items.push(item);
         this.times.push(time);
     }
-    shift(num) {
-        this.items.shift(num);
-        this.times.shift(num);
+    shift() {
+        this.items.shift();
+        this.times.shift();
     }
     get length() {
         if (!this.config.cleaningInterval)

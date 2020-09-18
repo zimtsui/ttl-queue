@@ -9,8 +9,6 @@ import Bluebird from 'bluebird';
 test('test array', async t => {
     const q = new TtlQueue<number, NodeJS.Timeout>({
         ttl: Number.POSITIVE_INFINITY,
-        elemCarrierConstructor: Array,
-        timeCarrierConstructor: Array,
     }, setTimeout, clearTimeout);
     await q.start(err => { if (err) t.log(err); });
     q.push(1);
@@ -24,8 +22,6 @@ test('test ttl array', async t => {
     const q = new TtlQueue<number, NodeJS.Timeout>({
         ttl: 2000,
         cleaningInterval: 100,
-        elemCarrierConstructor: Array,
-        timeCarrierConstructor: Array,
     }, setTimeout, clearTimeout);
     await q.start(err => { if (err) t.log(err); });
     q.push(1);

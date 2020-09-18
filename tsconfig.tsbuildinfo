@@ -201,29 +201,19 @@
         "signature": "cd6efb9467a8b6338ece2e2855e37765700f2cd061ca54b01b33878cf5c7677e",
         "affectsGlobalScope": true
       },
-      "./node_modules/queue/dist/interfaces.d.ts": {
-        "version": "f34e3bb31e270ecf8b2d29e6d29ce31a85e3d720f2cc7fb6e85d61761026bb66",
-        "signature": "f34e3bb31e270ecf8b2d29e6d29ce31a85e3d720f2cc7fb6e85d61761026bb66",
+      "./node_modules/@types/double-ended-queue/index.d.ts": {
+        "version": "9c4de90f5d5e2b09b05799d655f45515d83638c4d7bde9151be3c236caf8402b",
+        "signature": "9c4de90f5d5e2b09b05799d655f45515d83638c4d7bde9151be3c236caf8402b",
         "affectsGlobalScope": false
       },
-      "./node_modules/queue/dist/linear.d.ts": {
-        "version": "ca373a6aabf8a2374140a6d704d52c22aa5b3e5e50cc05fe29b00792e38c0341",
-        "signature": "ca373a6aabf8a2374140a6d704d52c22aa5b3e5e50cc05fe29b00792e38c0341",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/queue/dist/iterabilize.d.ts": {
-        "version": "f2ddbbf2a1d5ab24684704dd00f30aacf886238146cbb73b7d9b8a7d822eaa0a",
-        "signature": "f2ddbbf2a1d5ab24684704dd00f30aacf886238146cbb73b7d9b8a7d822eaa0a",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/queue/dist/array-likify.d.ts": {
-        "version": "86b2bd61e0ee7c295133f612cf26bd292df0fb7671b198d48ba997e0d424be90",
-        "signature": "86b2bd61e0ee7c295133f612cf26bd292df0fb7671b198d48ba997e0d424be90",
+      "./node_modules/queue/dist/queue.d.ts": {
+        "version": "95e0b389a7ade5da686f8f2a6aec4975c26a77246df2adcaa7e879011c49fa27",
+        "signature": "95e0b389a7ade5da686f8f2a6aec4975c26a77246df2adcaa7e879011c49fa27",
         "affectsGlobalScope": false
       },
       "./node_modules/queue/dist/index.d.ts": {
-        "version": "83ba81b5e1556e1b4d4159c8600c805e96772461c75131ce5bfc7dc2328b7bae",
-        "signature": "83ba81b5e1556e1b4d4159c8600c805e96772461c75131ce5bfc7dc2328b7bae",
+        "version": "cc3e2dd66510aa2dcef07a7578af94b74bce86072cf0c7bb6e5600fceb4a56d4",
+        "signature": "cc3e2dd66510aa2dcef07a7578af94b74bce86072cf0c7bb6e5600fceb4a56d4",
         "affectsGlobalScope": false
       },
       "./node_modules/eventemitter3/index.d.ts": {
@@ -331,14 +321,9 @@
         "signature": "0714e2046df66c0e93c3330d30dbc0565b3e8cd3ee302cf99e4ede6220e5fec8",
         "affectsGlobalScope": true
       },
-      "./node_modules/@types/double-ended-queue/index.d.ts": {
-        "version": "9c4de90f5d5e2b09b05799d655f45515d83638c4d7bde9151be3c236caf8402b",
-        "signature": "9c4de90f5d5e2b09b05799d655f45515d83638c4d7bde9151be3c236caf8402b",
-        "affectsGlobalScope": false
-      },
       "./src/ttl-queue.ts": {
-        "version": "29f64a767ad873ecf2bd007cd1a6d13f3a34d7e62c1645e922d1c0e50891f85e",
-        "signature": "5a898ee1118cdd6c09c0f38955572c42ea45beb148b079cb462324a9bc210567",
+        "version": "5550a22db8a07d4816a3192d01976580d49cc6ed5495aa67326f3edf2489ae29",
+        "signature": "56b65601faefeeda774d8321d63451495cc3b2a50164fecee50ff60c55187651",
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
@@ -1528,14 +1513,6 @@
         "./node_modules/interruptible-timer/dist/index.d.ts",
         "./node_modules/startable/dist/index.d.ts"
       ],
-      "./node_modules/queue/dist/array-likify.d.ts": [
-        "./node_modules/@types/node/ts3.1/fs.d.ts",
-        "./node_modules/@types/node/ts3.1/process.d.ts",
-        "./node_modules/@types/node/ts3.1/util.d.ts",
-        "./node_modules/@types/node/ts3.4/fs.d.ts",
-        "./node_modules/@types/node/ts3.4/process.d.ts",
-        "./node_modules/@types/node/ts3.4/util.d.ts"
-      ],
       "./node_modules/queue/dist/index.d.ts": [
         "./node_modules/@types/node/ts3.1/fs.d.ts",
         "./node_modules/@types/node/ts3.1/process.d.ts",
@@ -1543,35 +1520,16 @@
         "./node_modules/@types/node/ts3.4/fs.d.ts",
         "./node_modules/@types/node/ts3.4/process.d.ts",
         "./node_modules/@types/node/ts3.4/util.d.ts",
-        "./node_modules/queue/dist/array-likify.d.ts",
-        "./node_modules/queue/dist/interfaces.d.ts",
-        "./node_modules/queue/dist/iterabilize.d.ts",
-        "./node_modules/queue/dist/linear.d.ts"
+        "./node_modules/queue/dist/queue.d.ts"
       ],
-      "./node_modules/queue/dist/interfaces.d.ts": [
+      "./node_modules/queue/dist/queue.d.ts": [
+        "./node_modules/@types/double-ended-queue/index.d.ts",
         "./node_modules/@types/node/ts3.1/fs.d.ts",
         "./node_modules/@types/node/ts3.1/process.d.ts",
         "./node_modules/@types/node/ts3.1/util.d.ts",
         "./node_modules/@types/node/ts3.4/fs.d.ts",
         "./node_modules/@types/node/ts3.4/process.d.ts",
         "./node_modules/@types/node/ts3.4/util.d.ts"
-      ],
-      "./node_modules/queue/dist/iterabilize.d.ts": [
-        "./node_modules/@types/node/ts3.1/fs.d.ts",
-        "./node_modules/@types/node/ts3.1/process.d.ts",
-        "./node_modules/@types/node/ts3.1/util.d.ts",
-        "./node_modules/@types/node/ts3.4/fs.d.ts",
-        "./node_modules/@types/node/ts3.4/process.d.ts",
-        "./node_modules/@types/node/ts3.4/util.d.ts"
-      ],
-      "./node_modules/queue/dist/linear.d.ts": [
-        "./node_modules/@types/node/ts3.1/fs.d.ts",
-        "./node_modules/@types/node/ts3.1/process.d.ts",
-        "./node_modules/@types/node/ts3.1/util.d.ts",
-        "./node_modules/@types/node/ts3.4/fs.d.ts",
-        "./node_modules/@types/node/ts3.4/process.d.ts",
-        "./node_modules/@types/node/ts3.4/util.d.ts",
-        "./node_modules/queue/dist/interfaces.d.ts"
       ],
       "./node_modules/startable/dist/index.d.ts": [
         "./node_modules/@types/node/ts3.1/fs.d.ts",
@@ -1610,7 +1568,6 @@
         "./src/ttl-queue.ts"
       ],
       "./src/ttl-queue.ts": [
-        "./node_modules/@types/double-ended-queue/index.d.ts",
         "./node_modules/@types/lodash/index.d.ts",
         "./node_modules/@types/node/ts3.1/fs.d.ts",
         "./node_modules/@types/node/ts3.1/process.d.ts",
@@ -2805,14 +2762,6 @@
         "./node_modules/interruptible-timer/dist/index.d.ts",
         "./node_modules/startable/dist/index.d.ts"
       ],
-      "./node_modules/queue/dist/array-likify.d.ts": [
-        "./node_modules/@types/node/ts3.1/fs.d.ts",
-        "./node_modules/@types/node/ts3.1/process.d.ts",
-        "./node_modules/@types/node/ts3.1/util.d.ts",
-        "./node_modules/@types/node/ts3.4/fs.d.ts",
-        "./node_modules/@types/node/ts3.4/process.d.ts",
-        "./node_modules/@types/node/ts3.4/util.d.ts"
-      ],
       "./node_modules/queue/dist/index.d.ts": [
         "./node_modules/@types/node/ts3.1/fs.d.ts",
         "./node_modules/@types/node/ts3.1/process.d.ts",
@@ -2820,35 +2769,16 @@
         "./node_modules/@types/node/ts3.4/fs.d.ts",
         "./node_modules/@types/node/ts3.4/process.d.ts",
         "./node_modules/@types/node/ts3.4/util.d.ts",
-        "./node_modules/queue/dist/array-likify.d.ts",
-        "./node_modules/queue/dist/interfaces.d.ts",
-        "./node_modules/queue/dist/iterabilize.d.ts",
-        "./node_modules/queue/dist/linear.d.ts"
+        "./node_modules/queue/dist/queue.d.ts"
       ],
-      "./node_modules/queue/dist/interfaces.d.ts": [
+      "./node_modules/queue/dist/queue.d.ts": [
+        "./node_modules/@types/double-ended-queue/index.d.ts",
         "./node_modules/@types/node/ts3.1/fs.d.ts",
         "./node_modules/@types/node/ts3.1/process.d.ts",
         "./node_modules/@types/node/ts3.1/util.d.ts",
         "./node_modules/@types/node/ts3.4/fs.d.ts",
         "./node_modules/@types/node/ts3.4/process.d.ts",
         "./node_modules/@types/node/ts3.4/util.d.ts"
-      ],
-      "./node_modules/queue/dist/iterabilize.d.ts": [
-        "./node_modules/@types/node/ts3.1/fs.d.ts",
-        "./node_modules/@types/node/ts3.1/process.d.ts",
-        "./node_modules/@types/node/ts3.1/util.d.ts",
-        "./node_modules/@types/node/ts3.4/fs.d.ts",
-        "./node_modules/@types/node/ts3.4/process.d.ts",
-        "./node_modules/@types/node/ts3.4/util.d.ts"
-      ],
-      "./node_modules/queue/dist/linear.d.ts": [
-        "./node_modules/@types/node/ts3.1/fs.d.ts",
-        "./node_modules/@types/node/ts3.1/process.d.ts",
-        "./node_modules/@types/node/ts3.1/util.d.ts",
-        "./node_modules/@types/node/ts3.4/fs.d.ts",
-        "./node_modules/@types/node/ts3.4/process.d.ts",
-        "./node_modules/@types/node/ts3.4/util.d.ts",
-        "./node_modules/queue/dist/interfaces.d.ts"
       ],
       "./node_modules/startable/dist/index.d.ts": [
         "./node_modules/@types/node/ts3.2/util.d.ts",
@@ -3120,11 +3050,8 @@
       "./node_modules/interruptible-timer/dist/timer.d.ts",
       "./node_modules/pollerloop/dist/index.d.ts",
       "./node_modules/pollerloop/dist/pollerloop.d.ts",
-      "./node_modules/queue/dist/array-likify.d.ts",
       "./node_modules/queue/dist/index.d.ts",
-      "./node_modules/queue/dist/interfaces.d.ts",
-      "./node_modules/queue/dist/iterabilize.d.ts",
-      "./node_modules/queue/dist/linear.d.ts",
+      "./node_modules/queue/dist/queue.d.ts",
       "./node_modules/startable/dist/index.d.ts",
       "./node_modules/startable/dist/primitive.d.ts",
       "./node_modules/startable/dist/startable.d.ts",

@@ -6,8 +6,6 @@ import Bluebird from 'bluebird';
 test('test array', async (t) => {
     const q = new TtlQueue({
         ttl: Number.POSITIVE_INFINITY,
-        elemCarrierConstructor: Array,
-        timeCarrierConstructor: Array,
     }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
@@ -21,8 +19,6 @@ test('test ttl array', async (t) => {
     const q = new TtlQueue({
         ttl: 2000,
         cleaningInterval: 100,
-        elemCarrierConstructor: Array,
-        timeCarrierConstructor: Array,
     }, setTimeout, clearTimeout);
     await q.start(err => { if (err)
         t.log(err); });
