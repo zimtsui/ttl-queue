@@ -2,7 +2,7 @@ import { Queue, } from 'queue';
 import { Pollerloop, } from 'pollerloop';
 import Startable from 'startable';
 class TtlQueue extends Startable {
-    constructor(configOrTtl, setTimeout, clearTimeout) {
+    constructor(config, setTimeout = global.setTimeout, clearTimeout = global.clearTimeout) {
         super();
         this.setTimeout = setTimeout;
         this.clearTimeout = clearTimeout;
@@ -11,18 +11,18 @@ class TtlQueue extends Startable {
         // default configuration
         this.config = {
             ttl: Number.POSITIVE_INFINITY,
+            cleaningInterval: 0,
         };
-        if (typeof configOrTtl === 'number')
-            configOrTtl = { ttl: configOrTtl };
-        Object.assign(this.config, configOrTtl);
-        const poll = async (stop, ifShouldBeRunning, delay) => {
+        if (typeof config === 'number')
+            config = { ttl: config };
+        this.config = {
+            ...this.config, ...config,
+        };
+        const poll = async (sleep) => {
             for (;;) {
-                await delay(this.config.cleaningInterval);
-                if (!ifShouldBeRunning())
-                    break;
+                await sleep(this.config.cleaningInterval);
                 this.clean();
             }
-            stop();
         };
         this.pollerloop = new Pollerloop(poll, this.setTimeout, this.clearTimeout);
         return new Proxy(this, {
@@ -49,7 +49,7 @@ class TtlQueue extends Startable {
     }
     async _start() {
         if (this.config.cleaningInterval)
-            await this.pollerloop.start(this.stop.bind(this));
+            await this.pollerloop.start(() => this.stop());
     }
     async _stop() {
         if (this.config.cleaningInterval)
@@ -76,11 +76,11 @@ class TtlQueue extends Startable {
     clean() {
         const now = Date.now();
         for (; this.times.length && this.times[0] < now - this.config.ttl;) {
-            const element = this.items[0];
+            const item = this.items[0];
             const time = this.times[0];
             this.shift();
             if (this.config.onShift)
-                this.config.onShift(element, time);
+                this.config.onShift(item, time);
         }
     }
 }

@@ -1,18 +1,16 @@
 # ttl-queue
 
-config
+This is a queue which periodically cleans the eldest items. 
+
+Its support for negative subscripts is implemented via Proxy. So it's not a standard es6 class. You should not conduct advanced operations such as inheritance.
+
+config interface
 
 ```ts
 interface Config<T> {
     ttl: number;
-    cleaningInterval?: number; // when falsy, ttl-queue cleans realtime
+    cleaningInterval?: number; // 0 for cleaning realtime
     onShift?: (element: T, time: number) => void;
-    elemCarrierConstructor: {
-        new(...args: any[]): RAIQI<T>;
-    };
-    timeCarrierConstructor: {
-        new(...args: any[]): RAIQI<number>;
-    };
 }
 ```
 
@@ -21,9 +19,7 @@ default configuration
 ```ts
 private config: Config<T> = {
     ttl: Number.POSITIVE_INFINITY,
-    cleaningInterval: undefined,
+    cleaningInterval: 0,
     onShift: undefined,
-    elemCarrierConstructor: Array,
-    timeCarrierConstructor: Array,
 };
 ```

@@ -5,64 +5,63 @@ import {
 import {
     Poll,
     Pollerloop,
-    SetTimeout,
-    ClearTimeout,
 } from 'pollerloop';
 import Startable from 'startable';
 import _ from 'lodash';
 
 interface Config<T> {
     ttl: number;
-    cleaningInterval?: number;
+    cleaningInterval: number;
     onShift?: (element: T, time: number) => void;
 }
 
-class TtlQueue<T, Timeout> extends Startable implements QueueLike<T> {
+class TtlQueue<T> extends Startable implements QueueLike<T> {
     private times = new Queue<number>();
     private items = new Queue<T>();
-    private pollerloop: Pollerloop<Timeout>;
+    private pollerloop: Pollerloop;
     [index: number]: T;
 
     // default configuration
     private config: Config<T> = {
         ttl: Number.POSITIVE_INFINITY,
+        cleaningInterval: 0,
     };
 
     constructor(
         config: Partial<Config<T>>,
-        setTimeout: SetTimeout<Timeout>,
-        clearTimeout: ClearTimeout<Timeout>,
+        setTimeout: typeof global.setTimeout,
+        clearTimeout: typeof global.clearTimeout,
     );
     constructor(
         ttl: number,
-        setTimeout: SetTimeout<Timeout>,
-        clearTimeout: ClearTimeout<Timeout>,
+        setTimeout: typeof global.setTimeout,
+        clearTimeout: typeof global.clearTimeout,
     );
     constructor(
-        configOrTtl: Partial<Config<T>> | number,
-        private setTimeout: SetTimeout<Timeout>,
-        private clearTimeout: ClearTimeout<Timeout>,
+        config: any,
+        private setTimeout = global.setTimeout,
+        private clearTimeout = global.clearTimeout,
     ) {
         super();
 
-        if (typeof configOrTtl === 'number') configOrTtl = { ttl: configOrTtl };
-        Object.assign(this.config, configOrTtl);
+        if (typeof config === 'number') config = { ttl: config };
+        this.config = {
+            ...this.config, ...config,
+        };
 
-        const poll: Poll = async (stop, ifShouldBeRunning, delay) => {
+        const poll: Poll = async (sleep) => {
             for (; ;) {
-                await delay(this.config.cleaningInterval!);
-                if (!ifShouldBeRunning()) break;
+                await sleep(this.config.cleaningInterval!);
                 this.clean();
             }
-            stop();
         }
         this.pollerloop = new Pollerloop(poll, this.setTimeout, this.clearTimeout);
 
         return new Proxy(this, {
             get: function (
-                target: TtlQueue<T, Timeout>,
+                target: TtlQueue<T>,
                 field: string | symbol | number,
-                receiver: TtlQueue<T, Timeout>,
+                receiver: TtlQueue<T>,
             ) {
                 if (typeof field === 'string') {
                     const index = Number.parseInt(field);
@@ -81,7 +80,7 @@ class TtlQueue<T, Timeout> extends Startable implements QueueLike<T> {
 
     protected async _start(): Promise<void> {
         if (this.config.cleaningInterval)
-            await this.pollerloop.start(this.stop.bind(this));
+            await this.pollerloop.start(() => this.stop());
     }
 
     protected async _stop(): Promise<void> {
@@ -112,12 +111,10 @@ class TtlQueue<T, Timeout> extends Startable implements QueueLike<T> {
     private clean(): void {
         const now = Date.now();
         for (; this.times.length && this.times[0] < now - this.config.ttl;) {
-            const element = this.items[0];
+            const item = this.items[0];
             const time = this.times[0];
             this.shift();
-            if (this.config.onShift) this.config.onShift(
-                element, time,
-            );
+            if (this.config.onShift) this.config.onShift(item, time);
         }
     }
 }
