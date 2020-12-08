@@ -29,13 +29,13 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
 
     constructor(
         config: Partial<Config<T>>,
-        setTimeout: typeof global.setTimeout,
-        clearTimeout: typeof global.clearTimeout,
+        setTimeout?: typeof global.setTimeout,
+        clearTimeout?: typeof global.clearTimeout,
     );
     constructor(
         ttl: number,
-        setTimeout: typeof global.setTimeout,
-        clearTimeout: typeof global.clearTimeout,
+        setTimeout?: typeof global.setTimeout,
+        clearTimeout?: typeof global.clearTimeout,
     );
     constructor(
         config: any,

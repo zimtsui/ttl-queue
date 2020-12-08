@@ -13,8 +13,8 @@ declare class TtlQueue<T> extends Startable implements QueueLike<T> {
     private pollerloop;
     [index: number]: T;
     private config;
-    constructor(config: Partial<Config<T>>, setTimeout: typeof global.setTimeout, clearTimeout: typeof global.clearTimeout);
-    constructor(ttl: number, setTimeout: typeof global.setTimeout, clearTimeout: typeof global.clearTimeout);
+    constructor(config: Partial<Config<T>>, setTimeout?: typeof global.setTimeout, clearTimeout?: typeof global.clearTimeout);
+    constructor(ttl: number, setTimeout?: typeof global.setTimeout, clearTimeout?: typeof global.clearTimeout);
     protected _start(): Promise<void>;
     protected _stop(): Promise<void>;
     push(item: T, time?: number): void;
