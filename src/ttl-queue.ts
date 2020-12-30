@@ -15,6 +15,14 @@ interface Config<T> {
     onShift?: (element: T, time: number) => void;
 }
 
+interface SetTimeout {
+    (cb: () => void, ms: number): any;
+}
+
+interface ClearTimeout {
+    (timerId: any): void;
+}
+
 class TtlQueue<T> extends Startable implements QueueLike<T> {
     private times = new Queue<number>();
     private items = new Queue<T>();
@@ -29,13 +37,13 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
 
     constructor(
         config: Partial<Config<T>>,
-        setTimeout?: typeof global.setTimeout,
-        clearTimeout?: typeof global.clearTimeout,
+        setTimeout?: SetTimeout,
+        clearTimeout?: ClearTimeout,
     );
     constructor(
         ttl: number,
-        setTimeout?: typeof global.setTimeout,
-        clearTimeout?: typeof global.clearTimeout,
+        setTimeout?: SetTimeout,
+        clearTimeout?: ClearTimeout,
     );
     constructor(
         config: any,

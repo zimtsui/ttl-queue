@@ -5,6 +5,12 @@ interface Config<T> {
     cleaningInterval: number;
     onShift?: (element: T, time: number) => void;
 }
+interface SetTimeout {
+    (cb: () => void, ms: number): any;
+}
+interface ClearTimeout {
+    (timerId: any): void;
+}
 declare class TtlQueue<T> extends Startable implements QueueLike<T> {
     private setTimeout;
     private clearTimeout;
@@ -13,8 +19,8 @@ declare class TtlQueue<T> extends Startable implements QueueLike<T> {
     private pollerloop;
     [index: number]: T;
     private config;
-    constructor(config: Partial<Config<T>>, setTimeout?: typeof global.setTimeout, clearTimeout?: typeof global.clearTimeout);
-    constructor(ttl: number, setTimeout?: typeof global.setTimeout, clearTimeout?: typeof global.clearTimeout);
+    constructor(config: Partial<Config<T>>, setTimeout?: SetTimeout, clearTimeout?: ClearTimeout);
+    constructor(ttl: number, setTimeout?: SetTimeout, clearTimeout?: ClearTimeout);
     protected _start(): Promise<void>;
     protected _stop(): Promise<void>;
     push(item: T, time?: number): void;
