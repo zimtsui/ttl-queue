@@ -471,14 +471,24 @@
         "signature": "a8a17c833a6e857778c83fb00d47df12270bd703ce3974baace8dd4be5e0fc47",
         "affectsGlobalScope": false
       },
-      "./node_modules/pollerloop/dist/pollerloop.d.ts": {
-        "version": "a0cedab2e1f70380c322edeb1d0d32011a71261dc930947c8a05b56960ea8701",
-        "signature": "a0cedab2e1f70380c322edeb1d0d32011a71261dc930947c8a05b56960ea8701",
+      "./node_modules/interruptible-timer/dist/timer.d.ts": {
+        "version": "656d3a2c0667f4b452fa069a1dfb5c2d5992a3a8d9cfbbf6ba9995b4d38324be",
+        "signature": "656d3a2c0667f4b452fa069a1dfb5c2d5992a3a8d9cfbbf6ba9995b4d38324be",
         "affectsGlobalScope": false
       },
-      "./node_modules/pollerloop/dist/index.d.ts": {
-        "version": "8b2fa3e4795c719fc67de5b588249fd0729ed88ac62f47ce9a566bc3bd991734",
-        "signature": "8b2fa3e4795c719fc67de5b588249fd0729ed88ac62f47ce9a566bc3bd991734",
+      "./node_modules/interruptible-timer/dist/web-timer.d.ts": {
+        "version": "3bd26547e7c40e4ce1683b7e270b98fbe29cae9d07c5f754f5c5d6e577548402",
+        "signature": "3bd26547e7c40e4ce1683b7e270b98fbe29cae9d07c5f754f5c5d6e577548402",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/interruptible-timer/dist/index.d.ts": {
+        "version": "96cb8354de902ae805f89a3e22033388e12bcb2c43d2a62ea4cda14cd45e52ce",
+        "signature": "96cb8354de902ae805f89a3e22033388e12bcb2c43d2a62ea4cda14cd45e52ce",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/pollerloop/dist/pollerloop.d.ts": {
+        "version": "eead92f29764619c0963c36f9959c6e688f4c293bd6959233522602c73aa58e0",
+        "signature": "eead92f29764619c0963c36f9959c6e688f4c293bd6959233522602c73aa58e0",
         "affectsGlobalScope": false
       },
       "./node_modules/@types/lodash/common/common.d.ts": {
@@ -547,8 +557,8 @@
         "affectsGlobalScope": true
       },
       "./src/ttl-queue.ts": {
-        "version": "4bfbf01186c010020f4cbd3cb7446d787cd2a121f5dcf5e6f0eef9e7cf192cbe",
-        "signature": "c69b895f7e5dd996dd265978aa07a46a5e8df2121c098a3a0e593edba2562943",
+        "version": "4e85a512c01cda7c88d1d98210386fc3a42782ae1a146ab3e364dceb19ab3778",
+        "signature": "f5f8c5f05bf3bc9c387db22106fb4980b59adb195ec5970c10d9f9b6046c2b7d",
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
@@ -1078,11 +1088,12 @@
         "./node_modules/@types/lodash/common/string.d.ts",
         "./node_modules/@types/lodash/common/util.d.ts"
       ],
-      "./node_modules/pollerloop/dist/index.d.ts": [
-        "./node_modules/pollerloop/dist/pollerloop.d.ts"
+      "./node_modules/interruptible-timer/dist/index.d.ts": [
+        "./node_modules/interruptible-timer/dist/timer.d.ts",
+        "./node_modules/interruptible-timer/dist/web-timer.d.ts"
       ],
       "./node_modules/pollerloop/dist/pollerloop.d.ts": [
-        "../../node_modules/@types/node/index.d.ts",
+        "./node_modules/interruptible-timer/dist/index.d.ts",
         "./node_modules/startable/dist/index.d.ts"
       ],
       "./node_modules/queue/dist/index.d.ts": [
@@ -1107,7 +1118,7 @@
       ],
       "./src/ttl-queue.ts": [
         "./node_modules/@types/lodash/index.d.ts",
-        "./node_modules/pollerloop/dist/index.d.ts",
+        "./node_modules/pollerloop/dist/pollerloop.d.ts",
         "./node_modules/queue/dist/index.d.ts",
         "./node_modules/startable/dist/index.d.ts"
       ]
@@ -1591,13 +1602,12 @@
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts"
       ],
-      "./node_modules/pollerloop/dist/index.d.ts": [
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./node_modules/pollerloop/dist/pollerloop.d.ts"
+      "./node_modules/interruptible-timer/dist/index.d.ts": [
+        "./node_modules/interruptible-timer/dist/timer.d.ts",
+        "./node_modules/interruptible-timer/dist/web-timer.d.ts"
       ],
       "./node_modules/pollerloop/dist/pollerloop.d.ts": [
-        "../../node_modules/@types/node/index.d.ts",
+        "./node_modules/interruptible-timer/dist/index.d.ts",
         "./node_modules/startable/dist/index.d.ts"
       ],
       "./node_modules/queue/dist/index.d.ts": [
@@ -1627,6 +1637,7 @@
         "./src/ttl-queue.ts"
       ],
       "./src/ttl-queue.ts": [
+        "./node_modules/pollerloop/dist/pollerloop.d.ts",
         "./node_modules/queue/dist/index.d.ts",
         "./node_modules/startable/dist/index.d.ts"
       ],
@@ -1873,7 +1884,9 @@
       "./node_modules/@types/lodash/common/util.d.ts",
       "./node_modules/@types/lodash/index.d.ts",
       "./node_modules/@types/normalize-package-data/index.d.ts",
-      "./node_modules/pollerloop/dist/index.d.ts",
+      "./node_modules/interruptible-timer/dist/index.d.ts",
+      "./node_modules/interruptible-timer/dist/timer.d.ts",
+      "./node_modules/interruptible-timer/dist/web-timer.d.ts",
       "./node_modules/pollerloop/dist/pollerloop.d.ts",
       "./node_modules/queue/dist/index.d.ts",
       "./node_modules/queue/dist/queue.d.ts",

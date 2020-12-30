@@ -3,8 +3,10 @@ import {
     QueueLike,
 } from 'queue';
 import {
-    Poll,
+    Loop,
     Pollerloop,
+    SetTimeout,
+    ClearTimeout,
 } from 'pollerloop';
 import Startable from 'startable';
 import _ from 'lodash';
@@ -13,14 +15,6 @@ interface Config<T> {
     ttl: number;
     cleaningInterval: number;
     onShift?: (element: T, time: number) => void;
-}
-
-interface SetTimeout {
-    (cb: () => void, ms: number): any;
-}
-
-interface ClearTimeout {
-    (timerId: any): void;
 }
 
 class TtlQueue<T> extends Startable implements QueueLike<T> {
@@ -37,20 +31,26 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
 
     constructor(
         config: Partial<Config<T>>,
-        setTimeout?: SetTimeout,
-        clearTimeout?: ClearTimeout,
-        now?: () => number,
+    );
+    constructor(
+        config: Partial<Config<T>>,
+        setTimeout: SetTimeout,
+        clearTimeout: ClearTimeout,
+        now: () => number,
     );
     constructor(
         ttl: number,
-        setTimeout?: SetTimeout,
-        clearTimeout?: ClearTimeout,
-        now?: () => number,
+    );
+    constructor(
+        ttl: number,
+        setTimeout: SetTimeout,
+        clearTimeout: ClearTimeout,
+        now: () => number,
     );
     constructor(
         config: any,
-        private setTimeout = global.setTimeout,
-        private clearTimeout = global.clearTimeout,
+        private setTimeout: SetTimeout = global.setTimeout,
+        private clearTimeout: ClearTimeout = global.clearTimeout,
         private now = Date.now,
     ) {
         super();
@@ -60,13 +60,13 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
             ...this.config, ...config,
         };
 
-        const poll: Poll = async (sleep) => {
+        const loop: Loop = async (sleep) => {
             for (; ;) {
                 await sleep(this.config.cleaningInterval!);
                 this.clean();
             }
         }
-        this.pollerloop = new Pollerloop(poll, this.setTimeout, this.clearTimeout);
+        this.pollerloop = new Pollerloop(loop, this.setTimeout, this.clearTimeout);
 
         return new Proxy(this, {
             get: function (

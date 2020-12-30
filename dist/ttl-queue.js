@@ -19,13 +19,13 @@ class TtlQueue extends Startable {
         this.config = {
             ...this.config, ...config,
         };
-        const poll = async (sleep) => {
+        const loop = async (sleep) => {
             for (;;) {
                 await sleep(this.config.cleaningInterval);
                 this.clean();
             }
         };
-        this.pollerloop = new Pollerloop(poll, this.setTimeout, this.clearTimeout);
+        this.pollerloop = new Pollerloop(loop, this.setTimeout, this.clearTimeout);
         return new Proxy(this, {
             get: function (target, field, receiver) {
                 if (typeof field === 'string') {
