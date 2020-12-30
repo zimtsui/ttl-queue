@@ -547,8 +547,8 @@
         "affectsGlobalScope": true
       },
       "./src/ttl-queue.ts": {
-        "version": "f928436e06b556ea384a28d96b5ba7b8abf47fd937d49f6d78e2a514ddadc3cb",
-        "signature": "35279d38afb859450f4bfbff25ad5c0aada9ebcff58c27dc8221570f6c6ed417",
+        "version": "4bfbf01186c010020f4cbd3cb7446d787cd2a121f5dcf5e6f0eef9e7cf192cbe",
+        "signature": "c69b895f7e5dd996dd265978aa07a46a5e8df2121c098a3a0e593edba2562943",
         "affectsGlobalScope": false
       },
       "./src/index.ts": {

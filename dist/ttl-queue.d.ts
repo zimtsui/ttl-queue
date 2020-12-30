@@ -14,13 +14,14 @@ interface ClearTimeout {
 declare class TtlQueue<T> extends Startable implements QueueLike<T> {
     private setTimeout;
     private clearTimeout;
+    private now;
     private times;
     private items;
     private pollerloop;
     [index: number]: T;
     private config;
-    constructor(config: Partial<Config<T>>, setTimeout?: SetTimeout, clearTimeout?: ClearTimeout);
-    constructor(ttl: number, setTimeout?: SetTimeout, clearTimeout?: ClearTimeout);
+    constructor(config: Partial<Config<T>>, setTimeout?: SetTimeout, clearTimeout?: ClearTimeout, now?: () => number);
+    constructor(ttl: number, setTimeout?: SetTimeout, clearTimeout?: ClearTimeout, now?: () => number);
     protected _start(): Promise<void>;
     protected _stop(): Promise<void>;
     push(item: T, time?: number): void;

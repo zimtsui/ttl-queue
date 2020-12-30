@@ -2,10 +2,11 @@ import { Queue, } from 'queue';
 import { Pollerloop, } from 'pollerloop';
 import Startable from 'startable';
 class TtlQueue extends Startable {
-    constructor(config, setTimeout = global.setTimeout, clearTimeout = global.clearTimeout) {
+    constructor(config, setTimeout = global.setTimeout, clearTimeout = global.clearTimeout, now = Date.now) {
         super();
         this.setTimeout = setTimeout;
         this.clearTimeout = clearTimeout;
+        this.now = now;
         this.times = new Queue();
         this.items = new Queue();
         // default configuration
@@ -55,7 +56,7 @@ class TtlQueue extends Startable {
         if (this.config.cleaningInterval)
             await this.pollerloop.stop();
     }
-    push(item, time = Date.now()) {
+    push(item, time = this.now()) {
         this.items.push(item);
         this.times.push(time);
     }
@@ -74,7 +75,7 @@ class TtlQueue extends Startable {
         return this.items[Symbol.iterator]();
     }
     clean() {
-        const now = Date.now();
+        const now = this.now();
         for (; this.times.length && this.times[0] < now - this.config.ttl;) {
             const item = this.items[0];
             const time = this.times[0];

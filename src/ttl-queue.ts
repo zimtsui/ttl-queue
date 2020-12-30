@@ -39,16 +39,19 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
         config: Partial<Config<T>>,
         setTimeout?: SetTimeout,
         clearTimeout?: ClearTimeout,
+        now?: () => number,
     );
     constructor(
         ttl: number,
         setTimeout?: SetTimeout,
         clearTimeout?: ClearTimeout,
+        now?: () => number,
     );
     constructor(
         config: any,
         private setTimeout = global.setTimeout,
         private clearTimeout = global.clearTimeout,
+        private now = Date.now,
     ) {
         super();
 
@@ -96,7 +99,7 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
             await this.pollerloop.stop();
     }
 
-    public push(item: T, time = Date.now()): void {
+    public push(item: T, time = this.now()): void {
         this.items.push(item);
         this.times.push(time);
     }
@@ -117,7 +120,7 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
     }
 
     private clean(): void {
-        const now = Date.now();
+        const now = this.now();
         for (; this.times.length && this.times[0] < now - this.config.ttl;) {
             const item = this.items[0];
             const time = this.times[0];
