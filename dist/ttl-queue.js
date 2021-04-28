@@ -2,7 +2,7 @@ import { Queue, } from 'queue';
 import { Pollerloop, } from 'pollerloop';
 import Startable from 'startable';
 class TtlQueue extends Startable {
-    constructor(config, setTimeout = global.setTimeout, clearTimeout = global.clearTimeout, now = Date.now) {
+    constructor(config, setTimeout = globalThis.setTimeout, clearTimeout = globalThis.clearTimeout, now = Date.now) {
         super();
         this.setTimeout = setTimeout;
         this.clearTimeout = clearTimeout;
@@ -39,18 +39,14 @@ class TtlQueue extends Startable {
                     return target.items[field];
                 }
                 else {
-                    const returnValue = Reflect.get(target, field, target);
-                    if (returnValue === target)
-                        return receiver;
-                    else
-                        return returnValue;
+                    return Reflect.get(target, field, receiver);
                 }
             }
         });
     }
     async _start() {
         if (this.config.cleaningInterval)
-            await this.pollerloop.start(() => this.stop());
+            await this.pollerloop.start(this.starp);
     }
     async _stop() {
         if (this.config.cleaningInterval)

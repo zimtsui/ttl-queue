@@ -49,8 +49,8 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
     );
     constructor(
         config: any,
-        private setTimeout: SetTimeout = global.setTimeout,
-        private clearTimeout: ClearTimeout = global.clearTimeout,
+        private setTimeout: SetTimeout = globalThis.setTimeout,
+        private clearTimeout: ClearTimeout = globalThis.clearTimeout,
         private now = Date.now,
     ) {
         super();
@@ -82,8 +82,7 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
                     if (!target.config.cleaningInterval) target.clean();
                     return target.items[field];
                 } else {
-                    const returnValue = Reflect.get(target, field, target);
-                    if (returnValue === target) return receiver; else return returnValue;
+                    return Reflect.get(target, field, receiver);
                 }
             }
         });
@@ -91,7 +90,7 @@ class TtlQueue<T> extends Startable implements QueueLike<T> {
 
     protected async _start(): Promise<void> {
         if (this.config.cleaningInterval)
-            await this.pollerloop.start(() => this.stop());
+            await this.pollerloop.start(this.starp);
     }
 
     protected async _stop(): Promise<void> {

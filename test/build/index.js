@@ -6,7 +6,7 @@ import Bluebird from 'bluebird';
 test('test array', async (t) => {
     const q = new TtlQueue({
         ttl: Number.POSITIVE_INFINITY,
-    }, setTimeout, clearTimeout);
+    }, setTimeout, clearTimeout, Date.now);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
@@ -19,7 +19,7 @@ test('test ttl array', async (t) => {
     const q = new TtlQueue({
         ttl: 2000,
         cleaningInterval: 100,
-    }, setTimeout, clearTimeout);
+    }, setTimeout, clearTimeout, Date.now);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
@@ -34,7 +34,7 @@ test('test ttl queue', async (t) => {
     const q = new TtlQueue({
         ttl: 2000,
         cleaningInterval: 100,
-    }, setTimeout, clearTimeout);
+    }, setTimeout, clearTimeout, Date.now);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
@@ -50,7 +50,7 @@ test('test ttl queue', async (t) => {
 test('test ttl queue realtime', async (t) => {
     const q = new TtlQueue({
         ttl: 2000,
-    }, setTimeout, clearTimeout);
+    }, setTimeout, clearTimeout, Date.now);
     await q.start(err => { if (err)
         t.log(err); });
     q.push(1);
