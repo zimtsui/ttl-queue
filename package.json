@@ -21,16 +21,14 @@
     "homepage": "https://github.com/zimtsui/ttl-queue#readme",
     "devDependencies": {
         "@types/bluebird": "^3.5.33",
+        "@types/node": "^15.0.1",
         "ava": "^3.13.0",
         "bluebird": "^3.7.0"
     },
     "dependencies": {
         "@types/double-ended-queue": "^2.1.1",
         "@types/lodash": "^4.14.165",
-        "double-ended-queue": "^2.1.0-0",
-        "lodash": "^4.17.15",
-        "pollerloop": "git+https://gitee.com/zimtsui/pollerloop.git",
-        "queue": "git+https://gitee.com/zimtsui/queue.git",
-        "startable": "git+https://gitee.com/zimtsui/startable.git"
+        "deque": "https://gitee.com/zimtsui/deque.git",
+        "lodash": "^4.17.15"
     }
 }
