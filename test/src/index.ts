@@ -1,10 +1,10 @@
 import {
     createTtlQueue,
-} from '../../dist/index';
+} from '../..';
 import test from 'ava';
-import assert from 'assert';
-import _ from 'lodash';
-import Bluebird from 'bluebird';
+import assert = require('assert');
+import _ = require('lodash');
+import Bluebird = require('bluebird');
 
 test('test array', async t => {
     const q = createTtlQueue<number>(

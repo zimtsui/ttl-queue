@@ -1,7 +1,10 @@
-import { createDeque, } from 'deque';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createTtlQueue = exports.default = void 0;
+const deque_1 = require("deque");
 function createTtlQueue(ttl, now = Date.now, onShift) {
-    const items = createDeque();
-    const times = createDeque();
+    const items = deque_1.createDeque();
+    const times = deque_1.createDeque();
     const clean = () => {
         for (; times.length && now() > times(0) + ttl;) {
             const item = items(0);
@@ -38,5 +41,6 @@ function createTtlQueue(ttl, now = Date.now, onShift) {
     });
     return queue;
 }
-export { createTtlQueue as default, createTtlQueue, };
+exports.default = createTtlQueue;
+exports.createTtlQueue = createTtlQueue;
 //# sourceMappingURL=ttl-queue.js.map
