@@ -27,7 +27,7 @@
     "dependencies": {
         "@types/double-ended-queue": "^2.1.1",
         "@types/lodash": "^4.14.165",
-        "deque": "https://gitee.com/zimtsui/deque.git",
+        "deque": "github:zimtsui/deque",
         "lodash": "^4.17.15"
     }
 }
