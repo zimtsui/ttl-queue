@@ -1,10 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTtlQueue = exports.default = void 0;
+exports.TtlQueue = exports.default = void 0;
 const deque_1 = require("deque");
-function createTtlQueue(ttl, now = Date.now, onShift) {
-    const items = deque_1.createDeque();
-    const times = deque_1.createDeque();
+/**
+ * This is a factory function. Don't prepend a "new".
+ */
+function TtlQueue(ttl, now = Date.now, onShift) {
+    const items = (0, deque_1.Deque)();
+    const times = (0, deque_1.Deque)();
     const clean = () => {
         for (; times.length && now() > times(0) + ttl;) {
             const item = items(0);
@@ -41,6 +44,6 @@ function createTtlQueue(ttl, now = Date.now, onShift) {
     });
     return queue;
 }
-exports.default = createTtlQueue;
-exports.createTtlQueue = createTtlQueue;
+exports.default = TtlQueue;
+exports.TtlQueue = TtlQueue;
 //# sourceMappingURL=ttl-queue.js.map

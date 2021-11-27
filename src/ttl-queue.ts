@@ -1,22 +1,16 @@
-import {
-    createDeque,
-} from 'deque';
+import { Deque, QueueLike } from 'deque';
 
-export interface QueueLike<T> extends Iterable<T> {
-    (index: number): T;
-    [Symbol.iterator]: () => Iterator<T>;
-    push(item: T): void;
-    shift(): T;
-    length: number;
-}
 
-function createTtlQueue<T>(
+/**
+ * This is a factory function. Don't prepend a "new".
+ */
+function TtlQueue<T>(
     ttl: number,
     now: () => number = Date.now,
     onShift?: (item: T, time: number) => void,
 ): QueueLike<T> {
-    const items = createDeque<T>();
-    const times = createDeque<number>();
+    const items = Deque<T>();
+    const times = Deque<number>();
 
     const clean = (): void => {
         for (; times.length && now() > times(0) + ttl;) {
@@ -57,6 +51,7 @@ function createTtlQueue<T>(
 }
 
 export {
-    createTtlQueue as default,
-    createTtlQueue,
+    TtlQueue as default,
+    TtlQueue,
+    QueueLike,
 }

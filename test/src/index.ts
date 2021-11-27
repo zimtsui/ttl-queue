@@ -1,13 +1,11 @@
-import {
-    createTtlQueue,
-} from '../..';
+import { TtlQueue } from '../..';
 import test from 'ava';
 import assert = require('assert');
 import _ = require('lodash');
 import Bluebird = require('bluebird');
 
 test('test array', async t => {
-    const q = createTtlQueue<number>(
+    const q = TtlQueue<number>(
         Number.POSITIVE_INFINITY,
         Date.now,
     );
@@ -18,7 +16,7 @@ test('test array', async t => {
 });
 
 test('test ttl array', async t => {
-    const q = createTtlQueue<number>(
+    const q = TtlQueue<number>(
         2000,
         Date.now,
     );
@@ -31,7 +29,7 @@ test('test ttl array', async t => {
 });
 
 test('test ttl queue', async t => {
-    const q = createTtlQueue<number>(
+    const q = TtlQueue<number>(
         2000,
         Date.now,
     );
