@@ -20,13 +20,13 @@
     "homepage": "https://github.com/zimtsui/ttl-queue#readme",
     "devDependencies": {
         "@types/bluebird": "^3.5.33",
-        "@types/node": "^14.17.21",
         "ava": "^3.13.0",
         "bluebird": "^3.7.0"
     },
     "dependencies": {
         "@types/double-ended-queue": "^2.1.1",
         "@types/lodash": "^4.14.165",
+        "@types/node": "^16.11.21",
         "deque": "github:zimtsui/deque",
         "lodash": "^4.17.15"
     }

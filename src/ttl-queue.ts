@@ -1,10 +1,15 @@
-import { Deque, QueueLike } from 'deque';
+import {
+    Deque,
+    QueueLike,
+    ElementType,
+    DequeLike,
+} from 'deque';
 
 
 /**
  * This is a factory function. Don't prepend a "new".
  */
-function TtlQueue<T>(
+function TtlQueue<T extends ElementType>(
     ttl: number,
     now: () => number = Date.now,
     onShift?: (item: T, time: number) => void,
@@ -54,4 +59,6 @@ export {
     TtlQueue as default,
     TtlQueue,
     QueueLike,
+    ElementType,
+    DequeLike,
 }
