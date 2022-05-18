@@ -1,54 +1,47 @@
-import {
-    Deque,
-    QueueLike,
-    ElementType,
-} from 'deque';
+import { Deque } from 'deque';
 
 
-export namespace TtlQueue {
-    export function create<T extends ElementType>(
-        ttl: number,
-        now: () => number = Date.now,
-        onShift?: (item: T, time: number) => void,
-    ): QueueLike<T> {
-        const items = Deque.create<T>();
-        const times = Deque.create<number>();
+interface Elem<T> {
+    item: T;
+    time: number;
+}
 
-        const clean = (): void => {
-            for (; times.length && now() > times(0) + ttl;) {
-                const item = items(0);
-                const time = times(0);
-                items.shift();
-                times.shift();
-                if (onShift) onShift(item, time);
-            }
-        }
+export class TtlQueue<T> implements Iterable<T> {
+    private q = new Deque<Elem<T>>();
 
-        const queue = <QueueLike<T>>((i: number) => {
-            clean();
-            return items(i);
+    public constructor(
+        private ttl: number,
+        private now: () => number = Date.now,
+    ) { }
+
+    private clean(): void {
+        while (
+            this.q.getSize() &&
+            this.now() > this.q.i(0).time + this.ttl
+        ) this.q.shift();
+    }
+
+    public i(index: number): T {
+        this.clean();
+        return this.q.i(index).item;
+    }
+
+    public push(x: T): void {
+        this.q.push({
+            item: x,
+            time: this.now(),
         });
-        queue.push = (item: T, time = now()): void => {
-            items.push(item);
-            times.push(time);
-            clean();
-        }
-        queue.shift = (): T => {
-            clean();
-            times.shift();
-            return items.shift();
-        }
-        queue[Symbol.iterator] = () => {
-            clean();
-            return items[Symbol.iterator]();
-        }
-        Reflect.defineProperty(queue, 'length', {
-            get() {
-                clean();
-                return items.length;
-            }
-        });
+        this.clean();
+    }
 
-        return queue;
+    public getSize(): number {
+        return this.q.getSize();
+    }
+
+    public [Symbol.iterator]() {
+        this.clean();
+        return [...this.q].map(
+            elem => elem.item,
+        )[Symbol.iterator]();
     }
 }

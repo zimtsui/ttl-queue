@@ -1,4 +1,11 @@
-import { QueueLike, ElementType } from 'deque';
-export declare namespace TtlQueue {
-    function create<T extends ElementType>(ttl: number, now?: () => number, onShift?: (item: T, time: number) => void): QueueLike<T>;
+export declare class TtlQueue<T> implements Iterable<T> {
+    private ttl;
+    private now;
+    private q;
+    constructor(ttl: number, now?: () => number);
+    private clean;
+    i(index: number): T;
+    push(x: T): void;
+    getSize(): number;
+    [Symbol.iterator](): IterableIterator<T>;
 }
