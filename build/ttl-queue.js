@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TtlQueue = void 0;
-const deque_1 = require("deque");
+const deque_1 = require("@zimtsui/deque");
 class TtlQueue {
     constructor(ttl, now = Date.now) {
         this.ttl = ttl;
@@ -13,13 +13,17 @@ class TtlQueue {
             this.now() > this.q.i(0).time + this.ttl)
             this.q.shift();
     }
+    /**
+     * @throws RangeError
+     * @param index - Can be negative.
+     */
     i(index) {
         this.clean();
-        return this.q.i(index).item;
+        return this.q.i(index).value;
     }
     push(x) {
         this.q.push({
-            item: x,
+            value: x,
             time: this.now(),
         });
         this.clean();
@@ -27,9 +31,12 @@ class TtlQueue {
     getSize() {
         return this.q.getSize();
     }
+    /**
+     * Time complexity O(n)
+     */
     [Symbol.iterator]() {
         this.clean();
-        return [...this.q].map(elem => elem.item)[Symbol.iterator]();
+        return [...this.q].map(item => item.value)[Symbol.iterator]();
     }
 }
 exports.TtlQueue = TtlQueue;

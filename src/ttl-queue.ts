@@ -1,13 +1,13 @@
-import { Deque } from 'deque';
+import { Deque } from '@zimtsui/deque';
 
 
-interface Elem<T> {
-    item: T;
+interface Item<T> {
+    value: T;
     time: number;
 }
 
 export class TtlQueue<T> implements Iterable<T> {
-    private q = new Deque<Elem<T>>();
+    private q = new Deque<Item<T>>();
 
     public constructor(
         private ttl: number,
@@ -21,14 +21,18 @@ export class TtlQueue<T> implements Iterable<T> {
         ) this.q.shift();
     }
 
+    /**
+     * @throws RangeError
+     * @param index - Can be negative.
+     */
     public i(index: number): T {
         this.clean();
-        return this.q.i(index).item;
+        return this.q.i(index).value;
     }
 
     public push(x: T): void {
         this.q.push({
-            item: x,
+            value: x,
             time: this.now(),
         });
         this.clean();
@@ -38,10 +42,13 @@ export class TtlQueue<T> implements Iterable<T> {
         return this.q.getSize();
     }
 
+    /**
+     * Time complexity O(n)
+     */
     public [Symbol.iterator]() {
         this.clean();
         return [...this.q].map(
-            elem => elem.item,
+            item => item.value,
         )[Symbol.iterator]();
     }
 }
