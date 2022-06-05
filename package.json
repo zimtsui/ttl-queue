@@ -1,12 +1,13 @@
 {
-    "name": "ttl-queue",
+    "name": "@zimtsui/ttl-queue",
     "version": "0.0.1",
     "description": "",
-    "main": "./build/ttl-queue.js",
-    "types": "./build/ttl-queue.d.ts",
+    "main": "./build/index.js",
+    "types": "./build/index.d.ts",
     "scripts": {
         "test": "tsc -b ./test/src/tsconfig.json && ava",
-        "build": "tsc -b ./src/tsconfig.json"
+        "build": "tsc -b ./src/tsconfig.json",
+        "docs": "typedoc --tsconfig ./src/tsconfig.json --excludePrivate --excludeProtected --cleanOutputDir ./src/index.ts"
     },
     "repository": {
         "type": "git",

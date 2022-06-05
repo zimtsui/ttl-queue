@@ -9,6 +9,9 @@ interface Item<T> {
 export class TtlQueue<T> implements Iterable<T> {
     private q = new Deque<Item<T>>();
 
+    /**
+     * @param ttl Number.POSITIVE_INFINITY for never removing.
+     */
     public constructor(
         private ttl: number,
         private now: () => number = Date.now,
