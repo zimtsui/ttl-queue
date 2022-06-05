@@ -9,6 +9,7 @@ export declare class TtlQueue<T> implements Iterable<T> {
      * @param index - Can be negative.
      */
     i(index: number): T;
+    slice(start?: number, end?: number): T[];
     push(x: T): void;
     getSize(): number;
     /**

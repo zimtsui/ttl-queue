@@ -21,6 +21,10 @@ class TtlQueue {
         this.clean();
         return this.q.i(index).value;
     }
+    slice(start = 0, end = this.getSize()) {
+        return this.q.slice(start, end)
+            .map(item => item.value);
+    }
     push(x) {
         this.q.push({
             value: x,

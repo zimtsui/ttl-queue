@@ -30,6 +30,14 @@ export class TtlQueue<T> implements Iterable<T> {
         return this.q.i(index).value;
     }
 
+    public slice(
+        start = 0,
+        end = this.getSize(),
+    ): T[] {
+        return this.q.slice(start, end)
+            .map(item => item.value);
+    }
+
     public push(x: T): void {
         this.q.push({
             value: x,
