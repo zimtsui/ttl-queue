@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TtlQueue = void 0;
 const deque_1 = require("@zimtsui/deque");
 class TtlQueue {
+    /**
+     * @param ttl Number.POSITIVE_INFINITY for never removing.
+     */
     constructor(ttl, now = Date.now) {
         this.ttl = ttl;
         this.now = now;

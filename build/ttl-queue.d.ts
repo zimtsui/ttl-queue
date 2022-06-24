@@ -2,6 +2,9 @@ export declare class TtlQueue<T> implements Iterable<T> {
     private ttl;
     private now;
     private q;
+    /**
+     * @param ttl Number.POSITIVE_INFINITY for never removing.
+     */
     constructor(ttl: number, now?: () => number);
     private clean;
     /**
