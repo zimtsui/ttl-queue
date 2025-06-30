@@ -1,50 +1,37 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TtlQueue = void 0;
-const deque_1 = require("@zimtsui/deque");
-class TtlQueue {
+export class TTLQueue {
+    ttl;
+    now;
+    v = [];
+    front = 0;
     /**
      * @param ttl Number.POSITIVE_INFINITY for never removing.
+     * @param now The function to get current timestamp.
      */
     constructor(ttl, now = Date.now) {
         this.ttl = ttl;
         this.now = now;
-        this.q = new deque_1.Deque();
     }
     clean() {
-        while (this.q.getSize() &&
-            this.now() > this.q.i(0).time + this.ttl)
-            this.q.shift();
-    }
-    /**
-     * @throws RangeError
-     * @param index - Can be negative.
-     */
-    i(index) {
-        this.clean();
-        return this.q.i(index).value;
-    }
-    slice(start = 0, end = this.getSize()) {
-        return this.q.slice(start, end)
-            .map(item => item.value);
+        while (this.front < this.v.length && this.now() > this.v[this.front].time + this.ttl)
+            this.front++;
+        if (this.front + this.front > this.v.length)
+            this.v = this.v.slice(this.front);
     }
     push(x) {
-        this.q.push({
+        this.v.push({
             value: x,
             time: this.now(),
         });
         this.clean();
     }
     getSize() {
-        return this.q.getSize();
-    }
-    /**
-     * Time complexity O(n)
-     */
-    [Symbol.iterator]() {
         this.clean();
-        return [...this.q].map(item => item.value)[Symbol.iterator]();
+        return this.v.length - this.front;
+    }
+    *[Symbol.iterator]() {
+        this.clean();
+        for (let i = this.front; i < this.v.length; i++)
+            yield this.v[i].value;
     }
 }
-exports.TtlQueue = TtlQueue;
 //# sourceMappingURL=ttl-queue.js.map

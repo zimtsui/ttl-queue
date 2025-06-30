@@ -1,32 +1,28 @@
 {
     "name": "@zimtsui/ttl-queue",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "",
-    "main": "./build/index.js",
-    "types": "./build/index.d.ts",
+    "exports": "./build/exports.js",
+    "type": "module",
     "scripts": {
         "test": "tsc -b ./test/src/tsconfig.json && ava",
         "build": "tsc -b ./src/tsconfig.json",
-        "docs": "typedoc --tsconfig ./src/tsconfig.json --excludePrivate --excludeProtected --cleanOutputDir ./src/index.ts"
+        "clean": "rm -r ./build; rm -r ./test/build",
+        "docs": "typedoc --tsconfig ./src/tsconfig.json --excludePrivate --excludeProtected --cleanOutputDir ./src/exports.ts"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/zimtsui/ttl-queue.git"
     },
     "author": "Zim",
-    "license": "SEE LICENSE IN ./LICENSE",
-    "bugs": {
-        "url": "https://github.com/zimtsui/ttl-queue/issues"
-    },
-    "homepage": "https://github.com/zimtsui/ttl-queue#readme",
     "devDependencies": {
         "@types/bluebird": "^3.5.33",
-        "@types/lodash": "^4.14.182",
+        "@types/node": "^22.15.34",
         "ava": "^4.3.0",
         "bluebird": "^3.7.0",
         "lodash": "^4.17.21"
     },
     "dependencies": {
-        "@zimtsui/deque": "^0.0.7"
+        "@types/lodash": "^4.17.19"
     }
 }

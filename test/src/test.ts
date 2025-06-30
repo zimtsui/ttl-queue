@@ -1,11 +1,11 @@
-import { TtlQueue } from '../..';
+import { TTLQueue } from '@zimtsui/ttl-queue';
 import test from 'ava';
-import assert = require('assert');
-import _ = require('lodash');
-import Bluebird = require('bluebird');
+import assert from 'node:assert';
+import _ from 'lodash';
+import Bluebird from 'bluebird';
 
 test('test array', async t => {
-    const q = new TtlQueue<number>(
+    const q = new TTLQueue<number>(
         Number.POSITIVE_INFINITY,
         Date.now,
     );
@@ -16,7 +16,7 @@ test('test array', async t => {
 });
 
 test('test ttl array', async t => {
-    const q = new TtlQueue<number>(
+    const q = new TTLQueue<number>(
         2000,
         Date.now,
     );
@@ -29,7 +29,7 @@ test('test ttl array', async t => {
 });
 
 test('test ttl queue', async t => {
-    const q = new TtlQueue<number>(
+    const q = new TTLQueue<number>(
         2000,
         Date.now,
     );
@@ -37,8 +37,6 @@ test('test ttl queue', async t => {
     await Bluebird.delay(1000);
     q.push(2);
     await Bluebird.delay(500);
-    assert(q.i(0) === 1);
-    assert(q.i(1) === 2);
     assert.deepStrictEqual([...q], [1, 2]);
     await Bluebird.delay(1000);
 });

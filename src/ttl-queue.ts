@@ -1,65 +1,41 @@
-import { Deque } from '@zimtsui/deque';
-
-
 interface Item<T> {
-    value: T;
-    time: number;
+	value: T;
+	time: number;
 }
 
-export class TtlQueue<T> implements Iterable<T> {
-    private q = new Deque<Item<T>>();
+export class TTLQueue<T> implements Iterable<T> {
+	private v: Item<T>[] = [];
+	private front = 0;
 
-    /**
-     * @param ttl Number.POSITIVE_INFINITY for never removing.
-     */
-    public constructor(
-        private ttl: number,
-        private now: () => number = Date.now,
-    ) { }
+	/**
+	 * @param ttl Number.POSITIVE_INFINITY for never removing.
+	 * @param now The function to get current timestamp.
+	 */
+	public constructor(
+		private ttl: number,
+		private now: () => number = Date.now,
+	) { }
 
-    private clean(): void {
-        while (
-            this.q.getSize() &&
-            this.now() > this.q.i(0).time + this.ttl
-        ) this.q.shift();
-    }
+	private clean(): void {
+		while (this.front < this.v.length && this.now() > this.v[this.front]!.time + this.ttl) this.front++;
+		if (this.front+this.front > this.v.length) this.v = this.v.slice(this.front);
+	}
 
-    /**
-     * @throws RangeError
-     * @param index - Can be negative.
-     */
-    public i(index: number): T {
-        this.clean();
-        return this.q.i(index).value;
-    }
+	public push(x: T): void {
+		this.v.push({
+			value: x,
+			time: this.now(),
+		});
+		this.clean();
+	}
 
-    public slice(
-        start = 0,
-        end = this.getSize(),
-    ): T[] {
-        return this.q.slice(start, end)
-            .map(item => item.value);
-    }
+	public getSize(): number {
+		this.clean();
+		return this.v.length - this.front;
+	}
 
-    public push(x: T): void {
-        this.q.push({
-            value: x,
-            time: this.now(),
-        });
-        this.clean();
-    }
-
-    public getSize(): number {
-        return this.q.getSize();
-    }
-
-    /**
-     * Time complexity O(n)
-     */
-    public [Symbol.iterator]() {
-        this.clean();
-        return [...this.q].map(
-            item => item.value,
-        )[Symbol.iterator]();
-    }
+	public *[Symbol.iterator](): Generator<T, void, void> {
+		this.clean();
+		for (let i = this.front; i < this.v.length; i++) yield this.v[i]!.value;
+	}
 }

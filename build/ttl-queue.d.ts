@@ -1,22 +1,15 @@
-export declare class TtlQueue<T> implements Iterable<T> {
+export declare class TTLQueue<T> implements Iterable<T> {
     private ttl;
     private now;
-    private q;
+    private v;
+    private front;
     /**
      * @param ttl Number.POSITIVE_INFINITY for never removing.
+     * @param now The function to get current timestamp.
      */
     constructor(ttl: number, now?: () => number);
     private clean;
-    /**
-     * @throws RangeError
-     * @param index - Can be negative.
-     */
-    i(index: number): T;
-    slice(start?: number, end?: number): T[];
     push(x: T): void;
     getSize(): number;
-    /**
-     * Time complexity O(n)
-     */
-    [Symbol.iterator](): IterableIterator<T>;
+    [Symbol.iterator](): Generator<T, void, void>;
 }
